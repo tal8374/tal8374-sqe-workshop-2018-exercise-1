@@ -14,26 +14,21 @@ $(document).ready(function () {
     });
 
     $('#button').click(() => {
-        let parsedCode = parseCode('let ttttt;');
+        let parsedCode = parseCode('let one,two;');
         let numberOfLines = parsedCode.body.length;
+
         for(let lineNumber = 1 ; lineNumber <= numberOfLines; lineNumber++) {
+            var declarationType = getDeclarationType(parsedCode, lineNumber);
 
-            handlers['VariableDeclaration'](parsedCode, lineNumber)
-
-            // let variable = parsedCode.body[lineNumber - 1];
-            //
-            // var table = document.getElementById('myTable');
-            // var row = table.insertRow(0);
-            //
-            // let payload = parseVariable(variable);
-            // payload.lineNumber = lineNumber;
-            //
-            // insertLine(row, payload)
+            handlers[declarationType](parsedCode, lineNumber)
         }
     });
 
+    function getDeclarationType(parsedCode, lineNumber) {
+        return parsedCode.body[lineNumber - 1].type;
+    }
+
     function variablesDeclarationHandler(parsedCode, lineNumber) {
-        console.log(parsedCode.body[lineNumber - 1].declarations)
         var declarations = parsedCode.body[lineNumber - 1].declarations;
 
         for(let i = 0; i < declarations.length; i++) {
