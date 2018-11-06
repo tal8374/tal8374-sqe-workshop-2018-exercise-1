@@ -1,5 +1,5 @@
-function functionDeclarationHandler(parsedCode, lineNumber) {
-    var declaration = parsedCode.body[lineNumber - 1];
+function functionDeclarationHandler(body, lineNumber) {
+    var declaration = body[lineNumber - 1];
 
     handleFunctionDeclaration(declaration, lineNumber);
 

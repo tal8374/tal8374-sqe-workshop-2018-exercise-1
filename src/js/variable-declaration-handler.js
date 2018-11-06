@@ -1,5 +1,5 @@
-function variablesDeclarationHandler(parsedCode, lineNumber) {
-    var declarations = parsedCode.body[lineNumber - 1].declarations;
+function variablesDeclarationHandler(body, lineNumber) {
+    var declarations = body[lineNumber - 1].declarations;
 
     for(let i = 0; i < declarations.length; i++) {
         variableDeclarationHandler(declarations[i], lineNumber)
