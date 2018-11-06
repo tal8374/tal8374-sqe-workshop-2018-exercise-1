@@ -10,8 +10,7 @@ function variableDeclarationHandler(declaration, lineNumber) {
     var table = document.getElementById('myTable');
     var row = table.insertRow(0);
 
-    let payload = parseVariable(declaration);
-    payload.lineNumber = lineNumber;
+    let payload = parseVariable(declaration, lineNumber);
 
     insertLine(row, payload)
 }
@@ -36,11 +35,12 @@ function createLines(row, numOfLines) {
     return lines;
 }
 
-function parseVariable(declaration) {
+function parseVariable(declaration, lineNumber) {
     return {
         type : declaration.type,
         name : declaration.id.name,
         value : declaration.init ? declaration.init.value : 0,
+        lineNumber : lineNumber,
     }
 }
 
