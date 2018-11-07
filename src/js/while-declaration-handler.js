@@ -1,26 +1,52 @@
-import {insertLineHandler} from './common'
+import {bodyDeclaration} from './body-declaration-handler';
 
-function whileDeclarationHandler(body, lineNumber) {
-    var declaration = body[lineNumber - 1];
+import {insertLineHandler} from './common';
 
-    handleWhileDeclaration(declaration, lineNumber);
+function whileDeclaration(body, wrapper, lineNumber) {
+    this.wrapper = wrapper;
+    this.body = body;
+    this.lineNumber = lineNumber;
 }
 
-function handleWhileDeclaration(declaration, lineNumber) {
-    var payLoad = getWhileData(declaration, lineNumber);
+whileDeclaration.prototype.init = function () {
+    this.handleWhileDeclaration();
 
-    insertLineHandler(payLoad, lineNumber);
-}
+    this.handleWhileBody();
 
-function getWhileData(declaration, lineNumber) {
-    console.log(declaration);
+    this.wrapper.increaseLineNumber();
+};
+
+whileDeclaration.prototype.handleWhileBody = function () {
+    var bodyDeclarationInstance = new bodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
+
+    bodyDeclarationInstance.init();
+};
+
+whileDeclaration.prototype.handleWhileDeclaration = function () {
+    var payLoad = this.getWhileData();
+
+    insertLineHandler(payLoad);
+};
+
+whileDeclaration.prototype.getWhileData = function() {
     return {
-        lineNumber: lineNumber,
-        type: declaration.type,
+        lineNumber: this.lineNumber,
+        type: this.body.type,
         name: null,
         value: null,
     };
-}
+};
 
+whileDeclaration.prototype.increaseLineNumber = function () {
+    this.lineNumber += 1;
 
-export {whileDeclarationHandler};
+    if(this.wrapper) {
+        this.wrapper.increaseLineNumber();
+    }
+};
+
+whileDeclaration.prototype.getLineNumber = function () {
+    return this.lineNumber;
+};
+
+export {whileDeclaration};

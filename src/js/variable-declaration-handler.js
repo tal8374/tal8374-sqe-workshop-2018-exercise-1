@@ -1,26 +1,34 @@
 import {insertLineHandler} from './common'
 
-function variablesDeclarationHandler(body, lineNumber) {
-    var declarations = body[lineNumber - 1].declarations;
+function variableDeclaration(body, wrapper, lineNumber) {
+    this.wrapper = wrapper;
+    this.body = body;
+    this.lineNumber = lineNumber;
+}
+
+variableDeclaration.prototype.init = function () {
+    var declarations = this.body.declarations;
 
     for(let i = 0; i < declarations.length; i++) {
-        variableDeclarationHandler(declarations[i], lineNumber)
+        this.variableDeclarationHandler(declarations[i], this.lineNumber - 1)
     }
-}
 
-function variableDeclarationHandler(declaration, lineNumber) {
-    let payload = parseVariable(declaration, lineNumber);
+    this.wrapper.increaseLineNumber(this.lineNumber + 1);
+};
+
+variableDeclaration.prototype.variableDeclarationHandler = function(declaration, lineNumber) {
+    let payload = this.parseVariable(declaration, lineNumber);
 
     insertLineHandler(payload)
-}
+};
 
-function parseVariable(declaration, lineNumber) {
+variableDeclaration.prototype.parseVariable = function parseVariable(declaration, lineNumber) {
     return {
         type : declaration.type,
         name : declaration.id.name,
         value : declaration.init ? declaration.init.value : 0,
-        lineNumber : lineNumber,
+        lineNumber : this.wrapper.getLineNumber(),
     }
-}
+};
 
-export {variablesDeclarationHandler};
+export {variableDeclaration};

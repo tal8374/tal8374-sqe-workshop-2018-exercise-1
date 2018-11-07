@@ -1,7 +1,9 @@
-import {bodyDeclarationHandler} from './body-declaration-handler';
+import {bodyDeclaration} from './body-declaration-handler';
 
 function facadeDeclarationHandler(parsedCode) {
-    bodyDeclarationHandler(parsedCode.body);
+    var handler = new bodyDeclaration(parsedCode.body, null, 1);
+
+    handler.init();
 }
 
 export {facadeDeclarationHandler};

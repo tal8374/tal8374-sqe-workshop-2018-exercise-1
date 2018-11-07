@@ -13,7 +13,6 @@ function handleWhileDeclaration(declaration, lineNumber) {
 }
 
 function getForData(declaration, lineNumber) {
-    console.log(declaration);
     return {
         lineNumber: lineNumber,
         type: declaration.type,
