@@ -1,7 +1,7 @@
 import {variableDeclaration} from './variable-declaration-handler';
-import {functionDeclarationHandler} from './function-declaration-handler';
+import {functionDeclaration} from './function-declaration-handler';
 import {whileDeclaration} from './while-declaration-handler';
-import {forDeclarationHandler} from './for-declaration-handler';
+import {forDeclaration} from './for-declaration-handler';
 
 function bodyDeclaration(body, wrapper, lineNumber = 1) {
     this.body = body;
@@ -12,9 +12,9 @@ function bodyDeclaration(body, wrapper, lineNumber = 1) {
 
 bodyDeclaration.prototype.handlers = {
     'VariableDeclaration': variableDeclaration,
-    'FunctionDeclaration': functionDeclarationHandler,
+    'FunctionDeclaration': functionDeclaration,
     'WhileStatement': whileDeclaration,
-    'ForStatement': forDeclarationHandler,
+    'ForStatement': forDeclaration,
 };
 
 bodyDeclaration.prototype.init = function () {

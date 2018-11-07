@@ -1,43 +1,74 @@
-import {insertLineHandler} from './common'
+import {insertLineHandler} from './common';
+import {bodyDeclaration} from './body-declaration-handler';
 
-function functionDeclarationHandler(body, lineNumber) {
-    var declaration = body[lineNumber - 1];
-
-    handleFunctionDeclaration(declaration, lineNumber);
-
-    handleParamsDeclaration(declaration, lineNumber);
+function functionDeclaration(body, wrapper, lineNumber) {
+    this.wrapper = wrapper;
+    this.body = body;
+    this.lineNumber = lineNumber;
 }
 
-function handleParamsDeclaration(declaration, lineNumber) {
-    declaration.params.forEach(function (param) {
-        var payload = getParamData(param, lineNumber);
+functionDeclaration.prototype.init = function () {
+    this.handleFunctionDeclaration();
+
+    this.handleParamsDeclaration();
+
+    this.handleFunctionBody();
+
+    if (this.wrapper) {
+        this.wrapper.increaseLineNumber();
+    }
+};
+
+functionDeclaration.prototype.handleFunctionBody = function () {
+    var bodyDeclarationInstance = new bodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
+
+    bodyDeclarationInstance.init();
+};
+
+functionDeclaration.prototype.handleParamsDeclaration = function () {
+    var params = this.body.params;
+
+    for (let i = 0; i < params.length; i++) {
+        var payload = this.getParamData(params[i]);
 
         insertLineHandler(payload);
-    });
-}
+    }
+};
 
-function getParamData(param, lineNumber) {
+functionDeclaration.prototype.getParamData = function (param) {
     return {
-        lineNumber: lineNumber,
-        type: "Param",
+        lineNumber: this.lineNumber,
+        type: 'Param',
         name: param.name,
         value: null,
     };
-}
+};
 
-function handleFunctionDeclaration(declaration, lineNumber) {
-    var payLoad = getFunctionData(declaration, lineNumber);
+functionDeclaration.prototype.handleFunctionDeclaration = function () {
+    var payLoad = this.getFunctionData();
 
-    insertLineHandler(payLoad, lineNumber);
-}
+    insertLineHandler(payLoad, this.lineNumber);
+};
 
-function getFunctionData(declaration, lineNumber) {
+functionDeclaration.prototype.getFunctionData = function () {
     return {
-        lineNumber: lineNumber,
-        type: declaration.type,
-        name: declaration.id.name,
+        lineNumber: this.lineNumber,
+        type: this.body.type,
+        name: this.body.id.name,
         value: null,
     };
-}
+};
 
-export {functionDeclarationHandler};
+functionDeclaration.prototype.increaseLineNumber = function () {
+    this.lineNumber += 1;
+
+    if (this.wrapper) {
+        this.wrapper.increaseLineNumber();
+    }
+};
+
+functionDeclaration.prototype.getLineNumber = function () {
+    return this.lineNumber;
+};
+
+export {functionDeclaration};
