@@ -29,11 +29,14 @@ whileDeclaration.prototype.handleWhileDeclaration = function () {
 };
 
 whileDeclaration.prototype.getWhileData = function() {
+    var condition = this.body.test.left.name + this.body.test.operator + this.body.test.right.name;
+
     return {
         lineNumber: this.lineNumber,
         type: this.body.type,
         name: null,
         value: null,
+        condition: condition,
     };
 };
 

@@ -6,13 +6,15 @@ function insertLineHandler(payLoad) {
 }
 
 function insertLine(row, payload) {
-    var numOfColumns = Object.keys(payload).length;
-    var lines = createLines(row, numOfColumns);
+    var lines = createLines(row, 5);
+
+    console.log(payload.condition);
 
     lines[0].innerHTML = payload.lineNumber;
     lines[1].innerHTML = payload.type;
     lines[2].innerHTML = payload.name;
-    lines[3].innerHTML = payload.value;
+    lines[3].innerHTML = payload.condition ? payload.condition : "" ;
+    lines[4].innerHTML = payload.value;
 }
 
 function createLines(row, numOfLines) {
