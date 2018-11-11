@@ -23,7 +23,6 @@ AssignmentExpression.prototype.assignmentExpressionHandler = function(declaratio
 };
 
 AssignmentExpression.prototype.parseAssignmentExpressionHandler = function parseVariable(expression) {
-    console.log(expression);
     return {
         type : "assignment expression",
         name : expression.left.name,

@@ -3,6 +3,7 @@ import {functionDeclaration} from './function-declaration-handler';
 import {whileDeclaration} from './while-declaration-handler';
 import {forDeclaration} from './for-declaration-handler';
 import {AssignmentExpression} from './assignment-expression-handler';
+import {IfExpression} from './if-expression-handler';
 
 function bodyDeclaration(body, wrapper, lineNumber = 1) {
     this.body = body;
@@ -10,13 +11,13 @@ function bodyDeclaration(body, wrapper, lineNumber = 1) {
     this.wrapper = wrapper;
 }
 
-
 bodyDeclaration.prototype.handlers = {
     'VariableDeclaration': variableDeclaration,
     'FunctionDeclaration': functionDeclaration,
     'WhileStatement': whileDeclaration,
     'ForStatement': forDeclaration,
     'ExpressionStatement': AssignmentExpression,
+    'IfStatement': IfExpression,
 };
 
 bodyDeclaration.prototype.init = function () {
@@ -29,13 +30,12 @@ bodyDeclaration.prototype.init = function () {
             handler.init();
         }
     }
-
 };
 
 bodyDeclaration.prototype.increaseLineNumber = function () {
     this.lineNumber += 1;
 
-    if(this.wrapper) {
+    if (this.wrapper) {
         this.wrapper.increaseLineNumber();
     }
 };
