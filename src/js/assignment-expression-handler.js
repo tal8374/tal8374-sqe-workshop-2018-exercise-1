@@ -7,7 +7,7 @@ function AssignmentExpression(body, wrapper, lineNumber) {
 }
 
 AssignmentExpression.prototype.init = function () {
-    if(this.body.expression.expressions) {
+    if (this.body.expression.expressions) {
         this.handleMultipleExpression();
     } else {
         this.handleSingleExpression();
@@ -28,7 +28,6 @@ AssignmentExpression.prototype.handleMultipleExpression = function () {
     for (let i = 0; i < expressions.length; i++) {
         this.assignmentExpressionHandler(expressions[i]);
     }
-
 };
 
 AssignmentExpression.prototype.assignmentExpressionHandler = function (declaration) {
@@ -38,12 +37,32 @@ AssignmentExpression.prototype.assignmentExpressionHandler = function (declarati
 };
 
 AssignmentExpression.prototype.parseAssignmentExpressionHandler = function parseVariable(expression) {
+    var assignmentExpressionValue = new AssignmentExpressionValue(expression.right);
+
     return {
         type: 'assignment expression',
         name: expression.left.name,
-        value: expression.right.value,
+        value: assignmentExpressionValue.getValue(),
         lineNumber: this.wrapper.getLineNumber(),
     };
+};
+
+function AssignmentExpressionValue(valueExpression) {
+    this.valueExpression = valueExpression;
+}
+
+AssignmentExpressionValue.prototype.getValue = function () {
+    if (this.valueExpression.computed) {
+        var assignmentExpressionValue = new AssignmentExpressionValue(this.valueExpression.property);
+
+        return this.valueExpression.object.name + '[' + assignmentExpressionValue.getValue() + ']';
+    } else if (this.valueExpression.operator) {
+        var assignmentExpressionValue = new AssignmentExpressionValue(this.valueExpression.left);
+
+        return assignmentExpressionValue.getValue() + this.valueExpression.operator + this.valueExpression.right.name;
+    } else {
+        return this.valueExpression.name;
+    }
 };
 
 export {AssignmentExpression};
