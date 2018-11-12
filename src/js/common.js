@@ -2,6 +2,8 @@ function insertLineHandler(payLoad) {
     var table = document.getElementById('myTable');
     var row = table.insertRow(0);
 
+    console.log(payLoad);
+
     insertLine(row, payLoad);
 }
 

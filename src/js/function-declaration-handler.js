@@ -1,5 +1,5 @@
 import {insertLineHandler} from './common';
-import {bodyDeclaration} from './body-declaration-handler';
+import {BodyDeclaration} from './body-declaration-handler';
 
 function functionDeclaration(body, wrapper, lineNumber) {
     this.wrapper = wrapper;
@@ -20,7 +20,7 @@ functionDeclaration.prototype.init = function () {
 };
 
 functionDeclaration.prototype.handleFunctionBody = function () {
-    var bodyDeclarationInstance = new bodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
+    var bodyDeclarationInstance = new BodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
 
     bodyDeclarationInstance.init();
 };

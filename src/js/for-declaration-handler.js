@@ -1,5 +1,5 @@
 import {insertLineHandler} from './common';
-import {bodyDeclaration} from './body-declaration-handler';
+import {BodyDeclaration} from './body-declaration-handler';
 import {variableDeclaration} from './variable-declaration-handler';
 import {functionDeclaration} from './function-declaration-handler';
 
@@ -39,7 +39,7 @@ forDeclaration.prototype.getParamData = function (param) {
 };
 
 forDeclaration.prototype.handleForBody = function () {
-    var bodyDeclarationInstance = new bodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
+    var bodyDeclarationInstance = new BodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
 
     bodyDeclarationInstance.init();
 };

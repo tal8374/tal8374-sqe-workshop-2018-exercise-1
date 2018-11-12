@@ -1,5 +1,7 @@
 import {insertLineHandler} from './common';
 
+import {ValueExpression} from './value-expression-handler';
+
 function AssignmentExpression(body, wrapper, lineNumber) {
     this.wrapper = wrapper;
     this.body = body;
@@ -37,32 +39,14 @@ AssignmentExpression.prototype.assignmentExpressionHandler = function (declarati
 };
 
 AssignmentExpression.prototype.parseAssignmentExpressionHandler = function parseVariable(expression) {
-    var assignmentExpressionValue = new AssignmentExpressionValue(expression.right);
+    var valueExpression = new ValueExpression(expression.right);
 
     return {
         type: 'assignment expression',
         name: expression.left.name,
-        value: assignmentExpressionValue.getValue(),
+        value: valueExpression.getValue(),
         lineNumber: this.wrapper.getLineNumber(),
     };
-};
-
-function AssignmentExpressionValue(valueExpression) {
-    this.valueExpression = valueExpression;
-}
-
-AssignmentExpressionValue.prototype.getValue = function () {
-    if (this.valueExpression.computed) {
-        var assignmentExpressionValue = new AssignmentExpressionValue(this.valueExpression.property);
-
-        return this.valueExpression.object.name + '[' + assignmentExpressionValue.getValue() + ']';
-    } else if (this.valueExpression.operator) {
-        var assignmentExpressionValue = new AssignmentExpressionValue(this.valueExpression.left);
-
-        return assignmentExpressionValue.getValue() + this.valueExpression.operator + this.valueExpression.right.name;
-    } else {
-        return this.valueExpression.name;
-    }
 };
 
 export {AssignmentExpression};

@@ -1,4 +1,4 @@
-import {bodyDeclaration} from './body-declaration-handler';
+import {BodyDeclaration} from './body-declaration-handler';
 import {Condition} from './condition-handler';
 
 import {insertLineHandler} from './common';
@@ -12,7 +12,7 @@ function IfExpression(body, wrapper, lineNumber) {
 IfExpression.prototype.init = function () {
     this.handleIfDeclaration();
 
-    if(this.body.body) {
+    if(this.body.consequent.body) {
         this.handleIfBody();
     } else {
         this.handleLineBody();
@@ -26,7 +26,8 @@ IfExpression.prototype.handleLineBody = function () {
 };
 
 IfExpression.prototype.handleIfBody = function () {
-    var bodyDeclarationInstance = new bodyDeclaration(this.body.consequent.body, this, this.lineNumber + 1);
+    console.log(this.body.consequent.body);
+    var bodyDeclarationInstance = new BodyDeclaration(this.body.consequent.body, this, this.lineNumber + 1);
 
     bodyDeclarationInstance.init();
 };

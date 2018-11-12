@@ -1,14 +1,14 @@
-import {bodyDeclaration} from './body-declaration-handler';
+import {BodyDeclaration} from './body-declaration-handler';
 
 import {insertLineHandler} from './common';
 
-function whileDeclaration(body, wrapper, lineNumber) {
+function WhileDeclaration(body, wrapper, lineNumber) {
     this.wrapper = wrapper;
     this.body = body;
     this.lineNumber = lineNumber;
 }
 
-whileDeclaration.prototype.init = function () {
+WhileDeclaration.prototype.init = function () {
     this.handleWhileDeclaration();
 
     this.handleWhileBody();
@@ -16,19 +16,25 @@ whileDeclaration.prototype.init = function () {
     this.wrapper.increaseLineNumber();
 };
 
-whileDeclaration.prototype.handleWhileBody = function () {
-    var bodyDeclarationInstance = new bodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
+WhileDeclaration.prototype.handleWhileBody = function () {
+    var bodyDeclarationInstance;
+
+    if(this.body.body.body) {
+        bodyDeclarationInstance = new BodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
+    } else {
+        bodyDeclarationInstance = new BodyDeclaration(this.body.body, this, this.lineNumber + 1);
+    }
 
     bodyDeclarationInstance.init();
 };
 
-whileDeclaration.prototype.handleWhileDeclaration = function () {
+WhileDeclaration.prototype.handleWhileDeclaration = function () {
     var payLoad = this.getWhileData();
 
     insertLineHandler(payLoad);
 };
 
-whileDeclaration.prototype.getWhileData = function() {
+WhileDeclaration.prototype.getWhileData = function() {
     var condition = this.body.test.left.name + this.body.test.operator + this.body.test.right.name;
 
     return {
@@ -40,7 +46,7 @@ whileDeclaration.prototype.getWhileData = function() {
     };
 };
 
-whileDeclaration.prototype.increaseLineNumber = function () {
+WhileDeclaration.prototype.increaseLineNumber = function () {
     this.lineNumber += 1;
 
     if(this.wrapper) {
@@ -48,8 +54,8 @@ whileDeclaration.prototype.increaseLineNumber = function () {
     }
 };
 
-whileDeclaration.prototype.getLineNumber = function () {
+WhileDeclaration.prototype.getLineNumber = function () {
     return this.lineNumber;
 };
 
-export {whileDeclaration};
+export {WhileDeclaration};

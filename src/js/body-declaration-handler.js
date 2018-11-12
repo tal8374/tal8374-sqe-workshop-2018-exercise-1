@@ -1,38 +1,58 @@
 import {variableDeclaration} from './variable-declaration-handler';
 import {functionDeclaration} from './function-declaration-handler';
-import {whileDeclaration} from './while-declaration-handler';
+import {WhileDeclaration} from './while-declaration-handler';
 import {forDeclaration} from './for-declaration-handler';
 import {AssignmentExpression} from './assignment-expression-handler';
 import {IfExpression} from './if-expression-handler';
 
-function bodyDeclaration(body, wrapper, lineNumber = 1) {
+function BodyDeclaration(body, wrapper, lineNumber = 1) {
     this.body = body;
     this.lineNumber = lineNumber;
     this.wrapper = wrapper;
 }
 
-bodyDeclaration.prototype.handlers = {
+BodyDeclaration.prototype.handlers = {
     'VariableDeclaration': variableDeclaration,
     'FunctionDeclaration': functionDeclaration,
-    'WhileStatement': whileDeclaration,
+    'WhileStatement': WhileDeclaration,
     'ForStatement': forDeclaration,
     'ExpressionStatement': AssignmentExpression,
     'IfStatement': IfExpression,
 };
 
-bodyDeclaration.prototype.init = function () {
-    for (let i = 0; i < this.body.length; i++) {
-        let declarationType = this.body[i].type;
+BodyDeclaration.prototype.init = function () {
+    if(this.body.length) {
+        for (let i = 0; i < this.body.length; i++) {
+            let declarationType = this.body[i].type;
+
+            if (this.handlers[declarationType]) {
+                let handler = new this.handlers[declarationType](this.body[i], this, this.lineNumber);
+
+                handler.init();
+            }
+        }
+    } else {
+        let declarationType = this.body.type;
 
         if (this.handlers[declarationType]) {
-            let handler = new this.handlers[declarationType](this.body[i], this, this.lineNumber);
+            let handler = new this.handlers[declarationType](this.body, this, this.lineNumber);
 
             handler.init();
         }
     }
+
+    // for (let i = 0; i < this.body.length; i++) {
+    //     let declarationType = this.body[i].type;
+    //
+    //     if (this.handlers[declarationType]) {
+    //         let handler = new this.handlers[declarationType](this.body[i], this, this.lineNumber);
+    //
+    //         handler.init();
+    //     }
+    // }
 };
 
-bodyDeclaration.prototype.increaseLineNumber = function () {
+BodyDeclaration.prototype.increaseLineNumber = function () {
     this.lineNumber += 1;
 
     if (this.wrapper) {
@@ -40,8 +60,8 @@ bodyDeclaration.prototype.increaseLineNumber = function () {
     }
 };
 
-bodyDeclaration.prototype.getLineNumber = function () {
+BodyDeclaration.prototype.getLineNumber = function () {
     return this.lineNumber;
 };
 
-export {bodyDeclaration};
+export {BodyDeclaration};

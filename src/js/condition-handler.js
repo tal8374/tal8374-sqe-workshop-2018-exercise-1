@@ -30,7 +30,7 @@ Condition.prototype.getLeftCondition = function () {
 
         return condition.getConditionExpression();
     } else {
-        return this.statement.left.name;
+        return this.statement.left.name ? this.statement.left.name : this.statement.left.value;
     }
 };
 
@@ -45,7 +45,7 @@ Condition.prototype.getRightCondition = function () {
         return memberExpression.getObjectCondition();
     }
     else {
-        return this.statement.right.name;
+        return this.statement.right.name ? this.statement.right.name : this.statement.right.value;
     }
 };
 

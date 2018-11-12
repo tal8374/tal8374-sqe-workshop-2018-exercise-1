@@ -1,5 +1,7 @@
 import {insertLineHandler} from './common';
 
+import {ValueExpression} from './value-expression-handler';
+
 function variableDeclaration(body, wrapper, lineNumber) {
     this.wrapper = wrapper;
     this.body = body;
@@ -18,16 +20,18 @@ variableDeclaration.prototype.init = function () {
 
 variableDeclaration.prototype.variableDeclarationHandler = function (declaration) {
     let payload = this.parseVariable(declaration);
-    console.log(payload);
 
     insertLineHandler(payload);
 };
 
-variableDeclaration.prototype.parseVariable = function parseVariable(declaration,) {
+variableDeclaration.prototype.parseVariable = function parseVariable(declaration) {
+    var valueExpression = new ValueExpression(declaration.init);
+    var value = valueExpression.getValue();
+
     return {
         type: declaration.type,
         name: declaration.id.name,
-        value: declaration.init ? declaration.init.value : 0,
+        value: value,
         lineNumber: this.wrapper.getLineNumber(),
     };
 };

@@ -15,7 +15,7 @@ ValueExpression.prototype.getValue = function () {
 
         return valueExpressionObj.getValue() + this.valueExpression.operator + this.valueExpression.right.name;
     } else {
-        return this.valueExpression.name;
+        return this.valueExpression.name ? this.valueExpression.name : this.valueExpression.value;
     }
 };
 
