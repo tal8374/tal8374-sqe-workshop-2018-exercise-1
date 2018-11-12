@@ -1,13 +1,13 @@
 import {insertLineHandler} from './common';
 import {BodyDeclaration} from './body-declaration-handler';
 
-function functionDeclaration(body, wrapper, lineNumber) {
+function FunctionDeclaration(body, wrapper, lineNumber) {
     this.wrapper = wrapper;
     this.body = body;
     this.lineNumber = lineNumber;
 }
 
-functionDeclaration.prototype.init = function () {
+FunctionDeclaration.prototype.init = function () {
     this.handleFunctionDeclaration();
 
     this.handleParamsDeclaration();
@@ -19,13 +19,13 @@ functionDeclaration.prototype.init = function () {
     }
 };
 
-functionDeclaration.prototype.handleFunctionBody = function () {
+FunctionDeclaration.prototype.handleFunctionBody = function () {
     var bodyDeclarationInstance = new BodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
 
     bodyDeclarationInstance.init();
 };
 
-functionDeclaration.prototype.handleParamsDeclaration = function () {
+FunctionDeclaration.prototype.handleParamsDeclaration = function () {
     var params = this.body.params;
 
     for (let i = 0; i < params.length; i++) {
@@ -35,7 +35,7 @@ functionDeclaration.prototype.handleParamsDeclaration = function () {
     }
 };
 
-functionDeclaration.prototype.getParamData = function (param) {
+FunctionDeclaration.prototype.getParamData = function (param) {
     return {
         lineNumber: this.lineNumber,
         type: 'Param',
@@ -44,13 +44,13 @@ functionDeclaration.prototype.getParamData = function (param) {
     };
 };
 
-functionDeclaration.prototype.handleFunctionDeclaration = function () {
+FunctionDeclaration.prototype.handleFunctionDeclaration = function () {
     var payLoad = this.getFunctionData();
 
     insertLineHandler(payLoad, this.lineNumber);
 };
 
-functionDeclaration.prototype.getFunctionData = function () {
+FunctionDeclaration.prototype.getFunctionData = function () {
     return {
         lineNumber: this.lineNumber,
         type: this.body.type,
@@ -59,7 +59,7 @@ functionDeclaration.prototype.getFunctionData = function () {
     };
 };
 
-functionDeclaration.prototype.increaseLineNumber = function () {
+FunctionDeclaration.prototype.increaseLineNumber = function () {
     this.lineNumber += 1;
 
     if (this.wrapper) {
@@ -67,8 +67,8 @@ functionDeclaration.prototype.increaseLineNumber = function () {
     }
 };
 
-functionDeclaration.prototype.getLineNumber = function () {
+FunctionDeclaration.prototype.getLineNumber = function () {
     return this.lineNumber;
 };
 
-export {functionDeclaration};
+export {FunctionDeclaration};

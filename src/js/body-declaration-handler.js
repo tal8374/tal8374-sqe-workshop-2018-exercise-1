@@ -1,7 +1,7 @@
-import {variableDeclaration} from './variable-declaration-handler';
-import {functionDeclaration} from './function-declaration-handler';
+import {VariableDeclaration} from './variable-declaration-handler';
+import {FunctionDeclaration} from './function-declaration-handler';
 import {WhileDeclaration} from './while-declaration-handler';
-import {forDeclaration} from './for-declaration-handler';
+import {ForDeclaration} from './for-declaration-handler';
 import {AssignmentExpression} from './assignment-expression-handler';
 import {IfExpression} from './if-expression-handler';
 
@@ -12,10 +12,10 @@ function BodyDeclaration(body, wrapper, lineNumber = 1) {
 }
 
 BodyDeclaration.prototype.handlers = {
-    'VariableDeclaration': variableDeclaration,
-    'FunctionDeclaration': functionDeclaration,
+    'VariableDeclaration': VariableDeclaration,
+    'FunctionDeclaration': FunctionDeclaration,
     'WhileStatement': WhileDeclaration,
-    'ForStatement': forDeclaration,
+    'ForStatement': ForDeclaration,
     'ExpressionStatement': AssignmentExpression,
     'IfStatement': IfExpression,
 };
@@ -40,16 +40,6 @@ BodyDeclaration.prototype.init = function () {
             handler.init();
         }
     }
-
-    // for (let i = 0; i < this.body.length; i++) {
-    //     let declarationType = this.body[i].type;
-    //
-    //     if (this.handlers[declarationType]) {
-    //         let handler = new this.handlers[declarationType](this.body[i], this, this.lineNumber);
-    //
-    //         handler.init();
-    //     }
-    // }
 };
 
 BodyDeclaration.prototype.increaseLineNumber = function () {
