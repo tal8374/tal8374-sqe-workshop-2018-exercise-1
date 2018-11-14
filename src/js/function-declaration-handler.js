@@ -47,7 +47,7 @@ FunctionDeclaration.prototype.getParamData = function (param) {
 FunctionDeclaration.prototype.handleFunctionDeclaration = function () {
     var payLoad = this.getFunctionData();
 
-    insertLineHandler(payLoad, this.lineNumber);
+    insertLineHandler(payLoad);
 };
 
 FunctionDeclaration.prototype.getFunctionData = function () {

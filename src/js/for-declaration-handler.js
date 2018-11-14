@@ -45,7 +45,7 @@ ForDeclaration.prototype.handleForBody = function () {
 ForDeclaration.prototype.handleForDeclaration = function () {
     var payLoad = this.getForData();
 
-    insertLineHandler(payLoad, this.lineNumber);
+    insertLineHandler(payLoad);
 };
 
 ForDeclaration.prototype.getForData = function () {

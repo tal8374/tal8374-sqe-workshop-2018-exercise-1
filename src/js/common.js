@@ -1,6 +1,8 @@
+var curLineNumber = 1;
+
 function insertLineHandler(payLoad) {
     var table = document.getElementById('myTable');
-    var row = table.insertRow(0);
+    var row = table.insertRow(curLineNumber++);
 
     console.log(payLoad);
 
