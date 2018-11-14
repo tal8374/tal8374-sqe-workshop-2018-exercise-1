@@ -7,8 +7,6 @@ function IfExpression(body, wrapper, lineNumber) {
     this.wrapper = wrapper;
     this.body = body;
     this.lineNumber = lineNumber;
-    console.log(1);
-    console.log(this.body);
 }
 
 IfExpression.prototype.init = function () {
@@ -30,8 +28,6 @@ IfExpression.prototype.handleIfBody = function () {
                 bodyDeclarationInstance = new BodyDeclaration(this.body.body[i], this, this.lineNumber + 1);
             }
         } else {
-            console.log('2')
-            console.log(this.body)
             bodyDeclarationInstance = new BodyDeclaration(this.body, this, this.lineNumber + 1);
         }
     } else if (this.body.consequent.body) {
