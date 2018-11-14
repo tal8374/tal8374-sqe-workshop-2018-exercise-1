@@ -4,6 +4,7 @@ import {WhileDeclaration} from './while-declaration-handler';
 import {ForDeclaration} from './for-declaration-handler';
 import {AssignmentExpression} from './assignment-expression-handler';
 import {IfExpression} from './if-expression-handler';
+import {ReturnExpression} from './return-expression-handler';
 
 function BodyDeclaration(body, wrapper, lineNumber = 1) {
     this.body = body;
@@ -19,6 +20,7 @@ BodyDeclaration.prototype.handlers = {
     'ExpressionStatement': AssignmentExpression,
     'AssignmentExpression': AssignmentExpression,
     'IfStatement': IfExpression,
+    'ReturnStatement': ReturnExpression,
 };
 
 BodyDeclaration.prototype.init = function () {
