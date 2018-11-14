@@ -14,7 +14,7 @@ describe('The if statement handler', () => {
             "Initialization done"
         );
 
-        var parsedCode = parseCode('if(statement < statement2){let a}else if(statement < statement2){let a}else{let a}');
+        var parsedCode = parseCode('if(statement < statement2){let a = a1; a = a1 + a2; a = arr[i]}else if(statement < statement2){let a}else{let a}');
         var ifExpression = new IfExpression(parsedCode.body[0], null, 1);
         var result = ifExpression.init();
 
