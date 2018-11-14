@@ -17,11 +17,12 @@ BodyDeclaration.prototype.handlers = {
     'WhileStatement': WhileDeclaration,
     'ForStatement': ForDeclaration,
     'ExpressionStatement': AssignmentExpression,
+    'AssignmentExpression': AssignmentExpression,
     'IfStatement': IfExpression,
 };
 
 BodyDeclaration.prototype.init = function () {
-    if(this.body.length) {
+    if (this.body.length) {
         for (let i = 0; i < this.body.length; i++) {
             let declarationType = this.body[i].type;
 

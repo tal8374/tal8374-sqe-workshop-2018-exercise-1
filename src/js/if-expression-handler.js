@@ -12,27 +12,42 @@ function IfExpression(body, wrapper, lineNumber) {
 IfExpression.prototype.init = function () {
     this.handleIfDeclaration();
 
-    if(this.body.consequent.body) {
-        this.handleIfBody();
-    } else {
-        this.handleLineBody();
-    }
+    this.handleIfBody();
+
+    this.handleAlternative();
 
     this.wrapper.increaseLineNumber();
 };
 
-IfExpression.prototype.handleLineBody = function () {
-
-};
-
 IfExpression.prototype.handleIfBody = function () {
-    console.log(this.body.consequent.body);
-    var bodyDeclarationInstance = new BodyDeclaration(this.body.consequent.body, this, this.lineNumber + 1);
+    var bodyDeclarationInstance;
+    if (this.body.type === 'ExpressionStatement' || this.body.type === 'BlockStatement') {
+        if (this.body.type === 'BlockStatement') {
+            for (let i = 0; i < this.body.body.length; i++) {
+                bodyDeclarationInstance = new BodyDeclaration(this.body.body[i], this, this.lineNumber + 1);
+            }
+        } else {
+            bodyDeclarationInstance = new BodyDeclaration(this.body, this, this.lineNumber + 1);
+        }
+    } else if (this.body.consequent.body) {
+        bodyDeclarationInstance = new BodyDeclaration(this.body.consequent.body, this, this.lineNumber + 1);
+    } else {
+        bodyDeclarationInstance = new BodyDeclaration(this.body.consequent, this, this.lineNumber + 1);
+    }
 
     bodyDeclarationInstance.init();
 };
 
+IfExpression.prototype.handleAlternative = function () {
+    if (!this.body.alternate) return;
+
+    var alternative = new IfExpression(this.body.alternate, this, this.lineNumber + 1);
+    alternative.init();
+};
+
 IfExpression.prototype.handleIfDeclaration = function () {
+    if (this.body.type === 'ExpressionStatement' || this.body.type === 'BlockStatement') return;
+
     var payLoad = this.getIfData();
 
     insertLineHandler(payLoad);
