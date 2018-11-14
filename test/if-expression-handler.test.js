@@ -282,18 +282,18 @@ describe('The if statement handler', () => {
 
                     assert.equal(
                         result,
-                        "Handled the body successfully"
+                        "Body statement is handled"
                     );
                 });
 
-                it('should  sould handle the body of else if statement', () => {
+                it('should  should handle the body of else if statement', () => {
                     var parsedCode = parseCode('if(statement){}else if(statement){let a}');
                     var ifExpression = new IfExpression(parsedCode.body[0], null, 1);
                     var result = ifExpression.handleIfBody();
 
                     assert.equal(
                         result,
-                        "Handled the body successfully"
+                        "Body statement is handled"
                     );
                 });
 
@@ -304,7 +304,7 @@ describe('The if statement handler', () => {
 
                     assert.equal(
                         result,
-                        "Handled the body successfully"
+                        "Body statement is handled"
                     );
                 })
 
