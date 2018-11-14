@@ -19,7 +19,7 @@ ReturnExpression.prototype.returnDeclarationHandler = function (declaration) {
 };
 
 ReturnExpression.prototype.parseReturn = function () {
-    var returnValueHandler = new ReturnValueHandler(this.body.argument);
+    let returnValueHandler = new ReturnValueHandler(this.body.argument);
 
     return {
         type: this.body.type,
@@ -32,28 +32,48 @@ function ReturnValueHandler(expression) {
     this.expression = expression;
 }
 
-ReturnValueHandler.prototype.getValue = function () {
-    if (this.expression.type === 'UnaryExpression') {
-        var curValue = this.expression.argument.value ? this.expression.argument.value : this.expression.argument.name;
-        return this.expression.operator + this.expression.argument.value;
-    } else if (this.expression.operator) {
-        var curExpression = this.expression;
-        var value = '';
+ReturnValueHandler.prototype.valueHandlers = {
+    'unaryExpressionHandler': ReturnValueHandler.unaryExpressionHandler,
+    'regularExpressionHandler': ReturnValueHandler.regularExpressionHandler,
+    'complexExpressionHandler': ReturnValueHandler.complexExpressionHandler,
+};
 
-        while (curExpression.left) {
-            if (curExpression.left) {
-                var leftValue = curExpression.right.name ? curExpression.right.name : curExpression.right.value;
-                value = curExpression.operator + leftValue + value;
-            } else {
-                value = curExpression.name + value;
-            }
+ReturnValueHandler.prototype.unaryExpressionHandler = function () {
+    let curValue = this.expression.argument.value ? this.expression.argument.value : this.expression.argument.name;
 
-            curExpression = curExpression.left;
+    return curValue + this.expression.operator + this.expression.argument.value;
+};
+
+ReturnValueHandler.prototype.regularExpressionHandler = function () {
+    return this.expression.value ? this.expression.value : this.expression.name;
+};
+
+
+ReturnValueHandler.prototype.complexExpressionHandler = function () {
+    let curExpression = this.expression;
+    let value = '';
+
+    while (curExpression.left) {
+        if (curExpression.left) {
+            let leftValue = curExpression.right.name ? curExpression.right.name : curExpression.right.value;
+            value = curExpression.operator + leftValue + value;
+        } else {
+            value = curExpression.name + value;
         }
 
-        return curExpression.name + value;
+        curExpression = curExpression.left;
+    }
+
+    return curExpression.name + value;
+};
+
+ReturnValueHandler.prototype.getValue = function () {
+    if (this.expression.type === 'UnaryExpression') {
+        return this.valueHandlers['UnaryExpression'];
+    } else if (this.expression.operator) {
+        return this.valueHandlers['complexExpressionHandler'];
     } else {
-        return this.expression.value ? this.expression.value : this.expression.name;
+        return this.valueHandlers['regularExpressionHandler'];
     }
 };
 

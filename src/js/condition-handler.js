@@ -1,15 +1,15 @@
-function Condition(statement) {
-    this.statement = statement;
+function Condition(conditionExpression) {
+    this.conditionExpression = conditionExpression;
 }
 
 Condition.prototype.getConditionExpression = function () {
-    if (this.statement.object) {
-        var memberExpression = new MemberExpression(this.statement);
+    if (this.conditionExpression.object) {
+        var objectExpression = new ObjectExpression(this.conditionExpression);
 
-        return memberExpression.getObjectCondition();
+        return objectExpression.getObjectCondition();
     }
-    else if (this.statement.name) {
-        return this.statement.name;
+    else if (this.conditionExpression.name) {
+        return this.conditionExpression.name;
     } else {
         var left = this.getLeftCondition();
         var condition = this.getCondition();
@@ -20,47 +20,47 @@ Condition.prototype.getConditionExpression = function () {
 };
 
 Condition.prototype.getLeftCondition = function () {
-    if (this.statement.left.object) {
-        var memberExpression = new MemberExpression(this.statement.left);
+    if (this.conditionExpression.left.object) {
+        var objectExpression = new ObjectExpression(this.conditionExpression.left);
 
-        return memberExpression.getObjectCondition();
+        return objectExpression.getObjectCondition();
     }
-    else if (this.statement.left.operator) {
-        var condition = new Condition(this.statement.left);
+    else if (this.conditionExpression.left.operator) {
+        var condition = new Condition(this.conditionExpression.left);
 
         return condition.getConditionExpression();
     } else {
-        return this.statement.left.name ? this.statement.left.name : this.statement.left.value;
+        return this.conditionExpression.left.name ? this.conditionExpression.left.name : this.conditionExpression.left.value;
     }
 };
 
 Condition.prototype.getCondition = function () {
-    return this.statement.operator;
+    return this.conditionExpression.operator;
 };
 
 Condition.prototype.getRightCondition = function () {
-    if (this.statement.right.object) {
-        var memberExpression = new MemberExpression(this.statement.right);
+    if (this.conditionExpression.right.object) {
+        var objectExpression = new ObjectExpression(this.conditionExpression.right);
 
-        return memberExpression.getObjectCondition();
+        return objectExpression.getObjectCondition();
     }
     else {
-        return this.statement.right.name ? this.statement.right.name : this.statement.right.value;
+        return this.conditionExpression.right.name ? this.conditionExpression.right.name : this.conditionExpression.right.value;
     }
 };
 
-function MemberExpression(statement) {
-    this.statement = statement;
+function ObjectExpression(objectExpression) {
+    this.objectExpression = objectExpression;
 }
 
-MemberExpression.prototype.getObjectCondition = function () {
-    var memberExpression = new MemberExpression(this.statement.property);
+ObjectExpression.prototype.getObjectCondition = function () {
+    var currentObjectExpression = new ObjectExpression(this.objectExpression.property);
 
-    if (!this.statement.object) {
-        return this.statement.name;
+    if (!this.objectExpression.object) {
+        return this.objectExpression.name;
     }
 
-    return this.statement.object.name + '[' + memberExpression.getObjectCondition() + ']';
+    return this.objectExpression.object.name + '[' + currentObjectExpression.getObjectCondition() + ']';
 };
 
 

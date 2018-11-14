@@ -36,7 +36,6 @@ BodyDeclaration.prototype.init = function () {
         }
     } else {
         let declarationType = this.body.type;
-
         if (this.handlers[declarationType]) {
             let handler = new this.handlers[declarationType](this.body, this, this.lineNumber);
 

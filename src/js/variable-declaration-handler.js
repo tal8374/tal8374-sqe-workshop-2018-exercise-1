@@ -9,7 +9,7 @@ function VariableDeclaration(body, wrapper, lineNumber) {
 }
 
 VariableDeclaration.prototype.init = function () {
-    var declarations = this.body.declarations;
+    let declarations = this.body.declarations;
 
     for (let i = 0; i < declarations.length; i++) {
         this.variableDeclarationHandler(declarations[i]);
@@ -25,8 +25,8 @@ VariableDeclaration.prototype.variableDeclarationHandler = function (declaration
 };
 
 VariableDeclaration.prototype.parseVariable = function parseVariable(declaration) {
-    var valueExpression = new ValueExpression(declaration.init);
-    var value = valueExpression.getValue();
+    let valueExpression = new ValueExpression(declaration.init);
+    let value = valueExpression.getValue();
 
     return {
         type: declaration.type,

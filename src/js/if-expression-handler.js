@@ -8,8 +8,6 @@ function IfExpression(expression, wrapper, lineNumber, type) {
     this.expression = expression;
     this.lineNumber = lineNumber;
     this.type = type;
-
-    console.log(expression);
 }
 
 IfExpression.prototype.init = function () {
@@ -19,29 +17,52 @@ IfExpression.prototype.init = function () {
 
     this.handleAlternative();
 
-    this.wrapper.increaseLineNumber();
+    if (this.wrapper) {
+        this.wrapper.increaseLineNumber();
+    }
+
+    return 'Initialization done';
+};
+
+IfExpression.prototype.handleBlockStatement = function () {
+    var bodyDeclarationInstance;
+
+    for (let i = 0; i < this.expression.body.length; i++) {
+        bodyDeclarationInstance = new BodyDeclaration(this.expression.body[i], this, this.lineNumber + 1);
+        bodyDeclarationInstance.init();
+    }
+};
+
+IfExpression.prototype.handleNoBlockStatement = function () {
+    var bodyDeclarationInstance;
+
+    bodyDeclarationInstance = new BodyDeclaration(this.expression, this, this.lineNumber + 1);
+    bodyDeclarationInstance.init();
+};
+
+IfExpression.prototype.handleStatement = function () {
+    if (this.expression.type === 'BlockStatement') {
+        this.handleBlockStatement();
+    } else {
+        this.handleNoBlockStatement();
+    }
 };
 
 IfExpression.prototype.handleIfBody = function () {
     var bodyDeclarationInstance;
+
     if (this.expression.type === 'ExpressionStatement' || this.expression.type === 'BlockStatement' ||
         this.expression.type === 'ReturnStatement') {
-        if (this.expression.type === 'BlockStatement') {
-            for (let i = 0; i < this.expression.body.length; i++) {
-                bodyDeclarationInstance = new BodyDeclaration(this.expression.body[i], this, this.lineNumber + 1);
-            }
-        } else {
-            bodyDeclarationInstance = new BodyDeclaration(this.expression, this, this.lineNumber + 1);
-        }
+        this.handleStatement();
     } else if (this.expression.consequent.body) {
         bodyDeclarationInstance = new BodyDeclaration(this.expression.consequent.body, this, this.lineNumber + 1);
+        bodyDeclarationInstance.init();
     } else {
         bodyDeclarationInstance = new BodyDeclaration(this.expression.consequent, this, this.lineNumber + 1);
-    }
-
-    if (bodyDeclarationInstance) {
         bodyDeclarationInstance.init();
     }
+
+    return 'Body statement is handled';
 };
 
 IfExpression.prototype.handleAlternative = function () {
