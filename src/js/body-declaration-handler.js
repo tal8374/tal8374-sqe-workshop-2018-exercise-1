@@ -24,23 +24,22 @@ BodyDeclaration.prototype.handlers = {
 };
 
 BodyDeclaration.prototype.init = function () {
-    if (this.body.length) {
-        for (let i = 0; i < this.body.length; i++) {
-            let declarationType = this.body[i].type;
+    if (!this.body.length) {
+        this.body = [this.body];
+    }
 
-            if (this.handlers[declarationType]) {
-                let handler = new this.handlers[declarationType](this.body[i], this, this.lineNumber);
+    for (let i = 0; i < this.body.length; i++) {
+        this.handleDeclaration(this.body[i]);
+    }
+};
 
-                handler.init();
-            }
-        }
-    } else {
-        let declarationType = this.body.type;
-        if (this.handlers[declarationType]) {
-            let handler = new this.handlers[declarationType](this.body, this, this.lineNumber);
+BodyDeclaration.prototype.handleDeclaration = function (declaration) {
+    let declarationType = declaration.type;
 
-            handler.init();
-        }
+    if (this.handlers[declarationType]) {
+        let declarationHandler = new this.handlers[declarationType](declaration, this, this.lineNumber);
+
+        declarationHandler.init();
     }
 };
 
