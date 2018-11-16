@@ -1,10 +1,11 @@
 import {insertLineHandler} from './common';
 import {BodyDeclaration} from './body-declaration-handler';
 
-function FunctionDeclaration(body, wrapper, lineNumber) {
+function FunctionDeclaration(body, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
     this.body = body;
     this.lineNumber = lineNumber;
+    this.type = type;
 }
 
 FunctionDeclaration.prototype.init = function () {
@@ -14,9 +15,9 @@ FunctionDeclaration.prototype.init = function () {
 
     this.handleFunctionBody();
 
-    if (this.wrapper) {
-        this.wrapper.increaseLineNumber();
-    }
+    this.increaseLineNumber();
+
+    return 'Success';
 };
 
 FunctionDeclaration.prototype.handleFunctionBody = function () {
@@ -38,7 +39,7 @@ FunctionDeclaration.prototype.handleParamsDeclaration = function () {
 FunctionDeclaration.prototype.getParamData = function (param) {
     return {
         lineNumber: this.lineNumber,
-        type: 'Param',
+        type: this.type ? this.type : 'Param',
         name: param.name,
         value: null,
     };

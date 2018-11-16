@@ -1,16 +1,14 @@
 var curLineNumber = 1;
 
-function insertLineHandler(payLoad) {
-    try {
+function insertLineHandler(payload) {
+    try{
         var table = document.getElementById('myTable');
     } catch (e) {
-        return 'Table is not exists';
+        return 'Failure';
     }
     var row = table.insertRow(curLineNumber++);
 
-    insertLine(row, payLoad);
-
-    return 'Done inserting line to the table';
+    insertLine(row, payload);
 }
 
 function insertLine(row, payload) {
@@ -19,10 +17,8 @@ function insertLine(row, payload) {
     lines[0].innerHTML = payload.lineNumber;
     lines[1].innerHTML = payload.type ? payload.type : '';
     lines[2].innerHTML = payload.name ? payload.name : '';
-    lines[3].innerHTML = payload.condition ? payload.condition : '';
-    lines[4].innerHTML = payload.value ? payload.value : '';
-
-    return 'Done inserting line to the table';
+    lines[3].innerHTML = payload.condition ? payload.condition : '' ;
+    lines[4].innerHTML = payload.value ;
 }
 
 function createLines(row, numOfLines) {

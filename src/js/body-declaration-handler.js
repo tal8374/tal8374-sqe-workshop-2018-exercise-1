@@ -6,10 +6,11 @@ import {AssignmentExpression} from './assignment-expression-handler';
 import {IfExpression} from './if-expression-handler';
 import {ReturnExpression} from './return-expression-handler';
 
-function BodyDeclaration(body, wrapper, lineNumber = 1) {
+function BodyDeclaration(body, wrapper, lineNumber = 1, type) {
     this.body = body;
     this.lineNumber = lineNumber;
     this.wrapper = wrapper;
+    this.type = type;
 }
 
 BodyDeclaration.prototype.handlers = {
@@ -37,7 +38,7 @@ BodyDeclaration.prototype.handleDeclaration = function (declaration) {
     let declarationType = declaration.type;
 
     if (this.handlers[declarationType]) {
-        let declarationHandler = new this.handlers[declarationType](declaration, this, this.lineNumber);
+        let declarationHandler = new this.handlers[declarationType](declaration, this, this.lineNumber, this.type);
 
         declarationHandler.init();
     }

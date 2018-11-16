@@ -2,10 +2,11 @@ import {insertLineHandler} from './common';
 
 import {ValueExpression} from './value-expression-handler';
 
-function VariableDeclaration(body, wrapper, lineNumber) {
+function VariableDeclaration(body, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
     this.body = body;
     this.lineNumber = lineNumber;
+    this.type = type;
 }
 
 VariableDeclaration.prototype.init = function () {
@@ -15,7 +16,11 @@ VariableDeclaration.prototype.init = function () {
         this.variableDeclarationHandler(declarations[i]);
     }
 
-    this.wrapper.increaseLineNumber(this.lineNumber + 1);
+    if(this.wrapper) {
+        this.wrapper.increaseLineNumber(this.lineNumber + 1);
+    }
+
+    return 'Success';
 };
 
 VariableDeclaration.prototype.variableDeclarationHandler = function (declaration) {
@@ -29,10 +34,10 @@ VariableDeclaration.prototype.parseVariable = function parseVariable(declaration
     let value = valueExpression.getValue();
 
     return {
-        type: declaration.type,
+        type: this.type ? this.type : declaration.type,
         name: declaration.id.name,
         value: value,
-        lineNumber: this.wrapper.getLineNumber(),
+        lineNumber: this.lineNumber,
     };
 };
 

@@ -1,11 +1,13 @@
 import {BodyDeclaration} from './body-declaration-handler';
 
 import {insertLineHandler} from './common';
+import {Expression} from './expression-handler';
 
-function WhileDeclaration(body, wrapper, lineNumber) {
+function WhileDeclaration(expression, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
-    this.body = body;
+    this.expression = expression;
     this.lineNumber = lineNumber;
+    this.type = type;
 }
 
 WhileDeclaration.prototype.init = function () {
@@ -13,16 +15,20 @@ WhileDeclaration.prototype.init = function () {
 
     this.handleWhileBody();
 
-    this.wrapper.increaseLineNumber();
+    if (this.wrapper) {
+        this.wrapper.increaseLineNumber();
+    }
+
+    return 'Success';
 };
 
 WhileDeclaration.prototype.handleWhileBody = function () {
     var bodyDeclarationInstance;
 
-    if(this.body.body.body) {
-        bodyDeclarationInstance = new BodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
+    if (this.expression.body.body) {
+        bodyDeclarationInstance = new BodyDeclaration(this.expression.body.body, this, this.lineNumber + 1);
     } else {
-        bodyDeclarationInstance = new BodyDeclaration(this.body.body, this, this.lineNumber + 1);
+        bodyDeclarationInstance = new BodyDeclaration(this.expression.body, this, this.lineNumber + 1);
     }
 
     bodyDeclarationInstance.init();
@@ -34,22 +40,22 @@ WhileDeclaration.prototype.handleWhileDeclaration = function () {
     insertLineHandler(payLoad);
 };
 
-WhileDeclaration.prototype.getWhileData = function() {
-    var condition = this.body.test.left.name + this.body.test.operator + this.body.test.right.name;
+WhileDeclaration.prototype.getWhileData = function () {
+    let expression = new Expression(this.expression.test);
 
     return {
         lineNumber: this.lineNumber,
-        type: this.body.type,
+        type: this.type ? this.type : this.expression.type,
         name: null,
         value: null,
-        condition: condition,
+        condition: expression.getExpression(),
     };
 };
 
 WhileDeclaration.prototype.increaseLineNumber = function () {
     this.lineNumber += 1;
 
-    if(this.wrapper) {
+    if (this.wrapper) {
         this.wrapper.increaseLineNumber();
     }
 };

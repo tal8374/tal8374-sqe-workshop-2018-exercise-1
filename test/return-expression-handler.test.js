@@ -1,7 +1,7 @@
 import assert from 'assert';
 import {ReturnExpression} from '../src/js/return-expression-handler';
 
-describe('For declaration handler', () => {
+describe('Return expression handler', () => {
     it('should handle return statement of one variable', () => {
         var parsedCode = {
             'type': 'ReturnStatement',

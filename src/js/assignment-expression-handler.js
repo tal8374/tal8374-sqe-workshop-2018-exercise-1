@@ -2,10 +2,11 @@ import {insertLineHandler} from './common';
 
 import {ValueExpression} from './value-expression-handler';
 
-function AssignmentExpression(body, wrapper, lineNumber) {
+function AssignmentExpression(body, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
     this.body = body;
     this.lineNumber = lineNumber;
+    this.type = type;
 }
 
 AssignmentExpression.prototype.init = function () {
@@ -42,7 +43,7 @@ AssignmentExpression.prototype.parseAssignmentExpressionHandler = function parse
     var valueExpression = new ValueExpression(expression.right);
 
     return {
-        type: 'assignment expression',
+        type: this.type ? this.type : 'assignment expression',
         name: expression.left.name,
         value: valueExpression.getValue(),
         lineNumber: this.wrapper.getLineNumber(),

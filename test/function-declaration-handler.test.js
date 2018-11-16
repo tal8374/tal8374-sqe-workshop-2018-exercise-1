@@ -2,7 +2,7 @@ import assert from 'assert';
 import {FunctionDeclaration} from '../src/js/function-declaration-handler';
 import {parseCode} from '../src/js/code-analyzer';
 
-describe('While declaration handler', () => {
+describe('Function declaration handler', () => {
     it('should check function statement with empty body', () => {
         var parsedCode = parseCode('function functionName(){}');
         var functionDeclaration = new FunctionDeclaration(parsedCode.body[0], null, 1);

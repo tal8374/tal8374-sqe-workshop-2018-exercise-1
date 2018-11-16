@@ -43,6 +43,8 @@ IfExpression.prototype.handleIfBody = function () {
     let body = this.expression.consequent ? this.expression.consequent : this.expression.alternate;
 
     this.handlers[body.type](body, this, this.lineNumber);
+
+    return 'Body statement is handled';
 };
 
 IfExpression.prototype.handleAlternative = function () {
@@ -52,7 +54,13 @@ IfExpression.prototype.handleAlternative = function () {
         var alternative = new IfExpression(this.expression.alternate, this, this.lineNumber + 1, 'else if statement');
         alternative.init();
     } else {
-        var bodyInstance = new BodyDeclaration(this.expression.alternate, this, this.lineNumber + 1, 'else if statement');
+        var bodyInstance;
+
+        if (this.expression.alternate.body) {
+            bodyInstance = new BodyDeclaration(this.expression.alternate.body, this, this.lineNumber + 1, 'else if statement');
+        } else {
+            bodyInstance = new BodyDeclaration(this.expression.alternate, this, this.lineNumber + 1, 'else if statement');
+        }
         bodyInstance.init();
     }
 
@@ -68,7 +76,7 @@ IfExpression.prototype.handleIfDeclaration = function () {
 };
 
 IfExpression.prototype.getPayload = function () {
-    var condition = new Expression(this.expression.test);;
+    var condition = new Expression(this.expression.test);
 
     return {
         lineNumber: this.lineNumber,

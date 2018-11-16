@@ -1,10 +1,12 @@
 import {insertLineHandler} from './common';
 import {BodyDeclaration} from './body-declaration-handler';
+import {Expression} from './expression-handler';
 
-function ForDeclaration(body, wrapper, lineNumber) {
+function ForDeclaration(expression, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
-    this.body = body;
+    this.expression = expression;
     this.lineNumber = lineNumber;
+    this.type = type;
 }
 
 ForDeclaration.prototype.init = function () {
@@ -14,14 +16,16 @@ ForDeclaration.prototype.init = function () {
 
     this.handleForBody();
 
-    this.wrapper.increaseLineNumber();
+    this.increaseLineNumber();
+
+    return 'Success';
 };
 
 ForDeclaration.prototype.handleParamsDeclaration = function () {
-    var params = this.body.init.declarations;
+    let params = this.expression.init.declarations;
 
     for (let i = 0; i < params.length; i++) {
-        var payload = this.getParamData(params[i]);
+        let payload = this.getParamData(params[i]);
 
         insertLineHandler(payload);
     }
@@ -37,23 +41,26 @@ ForDeclaration.prototype.getParamData = function (param) {
 };
 
 ForDeclaration.prototype.handleForBody = function () {
-    var bodyDeclarationInstance = new BodyDeclaration(this.body.body.body, this, this.lineNumber + 1);
+    let bodyDeclarationInstance = new BodyDeclaration(this.expression.body.body, this, this.lineNumber + 1);
 
     bodyDeclarationInstance.init();
 };
 
 ForDeclaration.prototype.handleForDeclaration = function () {
-    var payLoad = this.getForData();
+    let payload = this.getPayload();
 
-    insertLineHandler(payLoad);
+    insertLineHandler(payload);
 };
 
-ForDeclaration.prototype.getForData = function () {
+ForDeclaration.prototype.getPayload = function () {
+    var condition = new Expression(this.expression.test);
+
     return {
         lineNumber: this.lineNumber,
-        type: this.body.type,
+        type: this.type ? this.type : this.expression.type,
         name: null,
         value: null,
+        condition: condition.getExpression(),
     };
 };
 
@@ -68,6 +75,5 @@ ForDeclaration.prototype.increaseLineNumber = function () {
 ForDeclaration.prototype.getLineNumber = function () {
     return this.lineNumber;
 };
-
 
 export {ForDeclaration};

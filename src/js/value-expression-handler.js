@@ -13,7 +13,7 @@ ValueExpression.prototype.getValue = function () {
 
         return this.valueExpression.object.name + '[' + valueExpressionObj.getValue() + ']';
     } else if (this.valueExpression.operator) {
-        this.handleOperatorValue();
+        return this.handleOperatorValue();
     } else {
         return this.valueExpression.name ? this.valueExpression.name : this.valueExpression.value;
     }
