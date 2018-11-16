@@ -1,5 +1,5 @@
 import {BodyDeclaration} from './body-declaration-handler';
-import {Condition} from './condition-handler';
+import {Expression} from './expression-handler';
 
 import {insertLineHandler} from './common';
 
@@ -17,68 +17,49 @@ IfExpression.prototype.init = function () {
 
     this.handleAlternative();
 
-    if (this.wrapper) {
-        this.wrapper.increaseLineNumber();
-    }
+    this.increaseLineNumber();
 
     return 'Initialization done';
 };
 
-IfExpression.prototype.handleBlockStatement = function () {
-    var bodyDeclarationInstance;
-
-    for (let i = 0; i < this.expression.body.length; i++) {
-        bodyDeclarationInstance = new BodyDeclaration(this.expression.body[i], this, this.lineNumber + 1);
-        bodyDeclarationInstance.init();
-    }
+IfExpression.prototype.handlers = {
+    'ExpressionStatement': expressionStatementHandler,
+    'BlockStatement': blockStatementHandler,
 };
 
-IfExpression.prototype.handleNoBlockStatement = function () {
-    var bodyDeclarationInstance;
+function expressionStatementHandler(body, wrapper, lineNumber) {
+    let bodyDeclarationInstance = new BodyDeclaration(body, wrapper, lineNumber + 1);
 
-    bodyDeclarationInstance = new BodyDeclaration(this.expression, this, this.lineNumber + 1);
     bodyDeclarationInstance.init();
-};
+}
 
-IfExpression.prototype.handleStatement = function () {
-    if (this.expression.type === 'BlockStatement') {
-        this.handleBlockStatement();
-    } else {
-        this.handleNoBlockStatement();
-    }
-};
+function blockStatementHandler(body, wrapper, lineNumber) {
+    let bodyDeclarationInstance = new BodyDeclaration(body.body, wrapper, lineNumber + 1);
+
+    bodyDeclarationInstance.init();
+}
 
 IfExpression.prototype.handleIfBody = function () {
-    var bodyDeclarationInstance;
+    let body = this.expression.consequent ? this.expression.consequent : this.expression.alternate;
 
-    if (this.expression.type === 'ExpressionStatement' || this.expression.type === 'BlockStatement' ||
-        this.expression.type === 'ReturnStatement') {
-        this.handleStatement();
-    } else if (this.expression.consequent.body) {
-        bodyDeclarationInstance = new BodyDeclaration(this.expression.consequent.body, this, this.lineNumber + 1);
-        bodyDeclarationInstance.init();
-    } else {
-        bodyDeclarationInstance = new BodyDeclaration(this.expression.consequent, this, this.lineNumber + 1);
-        bodyDeclarationInstance.init();
-    }
-
-    return 'Body statement is handled';
+    this.handlers[body.type](body, this, this.lineNumber);
 };
 
 IfExpression.prototype.handleAlternative = function () {
     if (!this.expression.alternate) return 'Alternative does not exists';
 
-    var alternative = new IfExpression(this.expression.alternate, this, this.lineNumber + 1, 'else if statement');
-    alternative.init();
+    if (this.expression.alternate.type === 'IfStatement') {
+        var alternative = new IfExpression(this.expression.alternate, this, this.lineNumber + 1, 'else if statement');
+        alternative.init();
+    } else {
+        var bodyInstance = new BodyDeclaration(this.expression.alternate, this, this.lineNumber + 1, 'else if statement');
+        bodyInstance.init();
+    }
 
     return 'Done handling the alternative';
 };
 
 IfExpression.prototype.handleIfDeclaration = function () {
-    if (this.expression.type === 'ExpressionStatement' || this.expression.type === 'ReturnStatement') {
-        return 'Shouldn\'t be handled';
-    }
-
     var payload = this.getPayload();
 
     insertLineHandler(payload);
@@ -87,18 +68,14 @@ IfExpression.prototype.handleIfDeclaration = function () {
 };
 
 IfExpression.prototype.getPayload = function () {
-    var condition;
-
-    if (this.expression.type !== 'BlockStatement') {
-        condition = new Condition(this.expression.test);
-    }
+    var condition = new Expression(this.expression.test);;
 
     return {
         lineNumber: this.lineNumber,
         type: this.type ? this.type : 'if statement',
         name: null,
         value: null,
-        condition: condition ? condition.getConditionExpression() : '',
+        condition: condition ? condition.getExpression() : '',
     };
 };
 
