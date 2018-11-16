@@ -2,66 +2,38 @@ function Condition(conditionExpression) {
     this.conditionExpression = conditionExpression;
 }
 
+Condition.prototype.handlers = {
+    'Literal': literalTestHandler,
+    'BinaryExpression': binaryExpressionHandler,
+    'Identifier': identifierTestHandler,
+    'MemberExpression': memberExpressionTestHandler,
+};
+
 Condition.prototype.getConditionExpression = function () {
-    if (this.conditionExpression.object) {
-        var objectExpression = new ObjectExpression(this.conditionExpression);
-
-        return objectExpression.getObjectCondition();
-    }
-    else if (this.conditionExpression.name) {
-        return this.conditionExpression.name;
-    } else {
-        var left = this.getLeftCondition();
-        var condition = this.getCondition();
-        var right = this.getRightCondition();
-
-        return left + condition + right;
-    }
+    return this.handlers[this.conditionExpression.type](this.conditionExpression);
 };
 
-Condition.prototype.getLeftCondition = function () {
-    if (this.conditionExpression.left.object) {
-        var objectExpression = new ObjectExpression(this.conditionExpression.left);
-
-        return objectExpression.getObjectCondition();
-    }
-    else if (this.conditionExpression.left.operator) {
-        var condition = new Condition(this.conditionExpression.left);
-
-        return condition.getConditionExpression();
-    } else {
-        return this.conditionExpression.left.name ? this.conditionExpression.left.name : this.conditionExpression.left.value;
-    }
-};
-
-Condition.prototype.getCondition = function () {
-    return this.conditionExpression.operator;
-};
-
-Condition.prototype.getRightCondition = function () {
-    if (this.conditionExpression.right.object) {
-        var objectExpression = new ObjectExpression(this.conditionExpression.right);
-
-        return objectExpression.getObjectCondition();
-    }
-    else {
-        return this.conditionExpression.right.name ? this.conditionExpression.right.name : this.conditionExpression.right.value;
-    }
-};
-
-function ObjectExpression(objectExpression) {
-    this.objectExpression = objectExpression;
+function literalTestHandler(conditionExpression) {
+    return conditionExpression.value;
 }
 
-ObjectExpression.prototype.getObjectCondition = function () {
-    var currentObjectExpression = new ObjectExpression(this.objectExpression.property);
+function binaryExpressionHandler(conditionExpression) {
+    let left = new Condition(conditionExpression.left).getConditionExpression();
+    let operator = conditionExpression.operator;
+    let right = new Condition(conditionExpression.right).getConditionExpression();
 
-    if (!this.objectExpression.object) {
-        return this.objectExpression.name;
-    }
+    return left + operator + right;
+}
 
-    return this.objectExpression.object.name + '[' + currentObjectExpression.getObjectCondition() + ']';
-};
+function identifierTestHandler(conditionExpression) {
+    return conditionExpression.name;
+}
 
+function memberExpressionTestHandler(conditionExpression) {
+    let object = conditionExpression.object.name;
+    let property = new Condition(conditionExpression.property).getConditionExpression();
+
+    return object + '[' + property + ']';
+}
 
 export {Condition};
