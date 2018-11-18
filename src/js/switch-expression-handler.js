@@ -58,7 +58,7 @@ SwitchStatementExpression.prototype.handleCaseName = function (caseData) {
         type: this.type ? this.type : caseData.type,
         name: null,
         value: null,
-        condition: caseName ? caseName.getExpression() : '',
+        condition: caseName ? '' + caseName.getExpression() : '',
     };
 
     insertLineHandler(caseNamePayload);
@@ -69,6 +69,8 @@ SwitchStatementExpression.prototype.handleCaseBody = function (caseData) {
     let body = new BodyDeclaration(caseData.consequent, this, this.lineNumber + 1);
 
     body.init();
+
+    this.increaseLineNumber();
 };
 
 SwitchStatementExpression.prototype.increaseLineNumber = function () {
@@ -83,4 +85,41 @@ SwitchStatementExpression.prototype.getLineNumber = function () {
     return this.lineNumber;
 };
 
-export {SwitchStatementExpression};
+function BreakStatementExpression(expression, wrapper, lineNumber, type) {
+    this.wrapper = wrapper;
+    this.expression = expression;
+    this.lineNumber = lineNumber;
+    this.type = type;
+}
+
+BreakStatementExpression.prototype.init = function () {
+    this.handleBreakStatement();
+
+    this.increaseLineNumber();
+
+    return 'Initialization done';
+};
+
+BreakStatementExpression.prototype.handleBreakStatement = function () {
+    let breakPayload = {
+        lineNumber: this.lineNumber,
+        type: this.type ? this.type : this.expression.type,
+    };
+
+    insertLineHandler(breakPayload);
+};
+
+BreakStatementExpression.prototype.increaseLineNumber = function () {
+    this.lineNumber += 1;
+
+    if (this.wrapper) {
+        this.wrapper.increaseLineNumber();
+    }
+};
+
+BreakStatementExpression.prototype.getLineNumber = function () {
+    return this.lineNumber;
+};
+
+
+export {SwitchStatementExpression, BreakStatementExpression};
