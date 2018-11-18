@@ -11,7 +11,6 @@ function TryCatchFinallyDeclaration(expression, wrapper, lineNumber, type) {
 }
 
 TryCatchFinallyDeclaration.prototype.init = function () {
-    console.log(this.expression);
     this.handleTry();
 
     this.handleCatch();
