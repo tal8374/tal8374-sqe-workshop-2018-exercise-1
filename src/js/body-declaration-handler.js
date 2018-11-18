@@ -7,6 +7,7 @@ import {IfExpression} from './if-expression-handler';
 import {ReturnExpression} from './return-expression-handler';
 import {SwitchStatementExpression} from './switch-expression-handler';
 import {DoWhileStatementExpression} from './do-while-expression-handler';
+import {ThrowDeclaration} from './throw-declaration-handler';
 
 function BodyDeclaration(body, wrapper, lineNumber = 1, type) {
     this.body = body;
@@ -26,6 +27,7 @@ BodyDeclaration.prototype.handlers = {
     'ReturnStatement': ReturnExpression,
     'SwitchStatement': SwitchStatementExpression,
     'DoWhileStatement': DoWhileStatementExpression,
+    'ThrowStatement': ThrowDeclaration,
 };
 
 BodyDeclaration.prototype.init = function () {
