@@ -11,7 +11,8 @@ Expression.prototype.handlers = {
     'BinaryExpression': binaryExpressionHandler,
     'Identifier': identifierTestHandler,
     'MemberExpression': memberExpressionTestHandler,
-    'UnaryExpression': unaryExpressionExpressionTestHandler,
+    'UnaryExpression': unaryExpressionTestHandler,
+    'CallExpression': CallExpressionTestHandler,
 };
 
 function literalTestHandler(conditionExpression) {
@@ -26,7 +27,7 @@ function binaryExpressionHandler(conditionExpression) {
     return left + operator + right;
 }
 
-function unaryExpressionExpressionTestHandler(conditionExpression) {
+function unaryExpressionTestHandler(conditionExpression) {
     let operator = conditionExpression.operator;
     let argument = new Expression(conditionExpression.argument).getExpression();
 
@@ -37,12 +38,17 @@ function identifierTestHandler(conditionExpression) {
     return conditionExpression.name;
 }
 
-
 function memberExpressionTestHandler(conditionExpression) {
     let object = conditionExpression.object.name;
     let property = new Expression(conditionExpression.property).getExpression();
 
     return object + '[' + property + ']';
+}
+
+function CallExpressionTestHandler(conditionExpression) {
+    let property = new Expression(conditionExpression.callee).getExpression();
+
+    return property + '()';
 }
 
 export {Expression};
