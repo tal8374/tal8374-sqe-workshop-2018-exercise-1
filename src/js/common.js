@@ -1,7 +1,7 @@
 var curLineNumber = 1;
 
 function insertLineHandler(payload) {
-    try{
+    try {
         var table = document.getElementById('myTable');
     } catch (e) {
         return 'Failure';
@@ -17,8 +17,8 @@ function insertLine(row, payload) {
     lines[0].innerHTML = payload.lineNumber;
     lines[1].innerHTML = payload.type ? payload.type : '';
     lines[2].innerHTML = payload.name ? payload.name : '';
-    lines[3].innerHTML = payload.condition ? payload.condition : '' ;
-    lines[4].innerHTML = payload.value ;
+    lines[3].innerHTML = payload.condition ? payload.condition : '';
+    lines[4].innerHTML = payload.value ? payload.value : '';
 }
 
 function createLines(row, numOfLines) {

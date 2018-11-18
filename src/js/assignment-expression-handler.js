@@ -12,11 +12,31 @@ function AssignmentExpression(body, wrapper, lineNumber, type) {
 AssignmentExpression.prototype.init = function () {
     if (this.body.expression.expressions) {
         this.handleMultipleExpression();
+    } else if (this.body.expression.type === 'UpdateExpression') {
+        this.handleUpdateExpression();
     } else {
         this.handleSingleExpression();
     }
 
     this.wrapper.increaseLineNumber(this.lineNumber + 1);
+};
+
+AssignmentExpression.prototype.handleUpdateExpression = function () {
+    let valueExpression = new ValueExpression(this.body.expression.argument);
+    let name;
+    if (this.body.expression.prefix) {
+        name = '++' + valueExpression.getValue();
+    } else {
+        name = valueExpression.getValue() + '++';
+    }
+
+    let payload = {
+        type: this.type ? this.type : this.body.expression.type,
+        name: name,
+        lineNumber: this.wrapper.getLineNumber(),
+    };
+
+    insertLineHandler(payload);
 };
 
 AssignmentExpression.prototype.handleSingleExpression = function () {
