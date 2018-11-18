@@ -5,6 +5,7 @@ import {ForDeclaration} from './for-declaration-handler';
 import {AssignmentExpression} from './assignment-expression-handler';
 import {IfExpression} from './if-expression-handler';
 import {ReturnExpression} from './return-expression-handler';
+import {SwitchStatementExpression} from './switch-expression-handler';
 
 function BodyDeclaration(body, wrapper, lineNumber = 1, type) {
     this.body = body;
@@ -22,6 +23,7 @@ BodyDeclaration.prototype.handlers = {
     'AssignmentExpression': AssignmentExpression,
     'IfStatement': IfExpression,
     'ReturnStatement': ReturnExpression,
+    'SwitchStatement': SwitchStatementExpression,
 };
 
 BodyDeclaration.prototype.init = function () {
