@@ -60,7 +60,7 @@ AssignmentExpression.prototype.parseAssignmentExpressionHandler = function (expr
     return {
         type: this.type ? this.type : 'assignment expression',
         name: expression.left ? expression.left.name : '',
-        value: valueExpression.getValue(),
+        value: '' + valueExpression.getValue(),
         lineNumber: this.lineNumber,
     };
 };

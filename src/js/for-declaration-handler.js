@@ -35,7 +35,7 @@ ForDeclaration.prototype.getParamData = function (param) {
         lineNumber: this.lineNumber,
         type: 'Param',
         name: param.id.name,
-        value: param.init.value,
+        value: '' + param.init.value,
     };
 };
 

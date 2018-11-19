@@ -36,7 +36,7 @@ VariableDeclaration.prototype.parseVariable = function parseVariable(declaration
     return {
         type: this.type ? this.type : declaration.type,
         name: declaration.id.name,
-        value: value,
+        value: '' + value,
         lineNumber: this.lineNumber,
     };
 };

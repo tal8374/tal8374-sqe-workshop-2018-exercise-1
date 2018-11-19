@@ -82,7 +82,7 @@ function logicalExpressionTestHandler(conditionExpression) {
 function yieldExpressionHandler(conditionExpression) {
     let expression = new Expression(conditionExpression.argument);
 
-    return expression.getExpression();
+    return 'yield ' + expression.getExpression();
 }
 
 function objectExpressionHandler(conditionExpression) {
