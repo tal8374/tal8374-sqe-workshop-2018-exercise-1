@@ -11,6 +11,7 @@ import {ThrowDeclaration} from './throw-declaration-handler';
 import {TryCatchFinallyDeclaration} from './try-catch-declaration-handler';
 import {BreakStatementExpression} from './break-expression-handler';
 import {ContinueStatementExpression} from './continue-expression-handler';
+import {LabeledDeclaration} from './labeled-declaration-handler';
 
 function BodyDeclaration(body, wrapper, lineNumber = 1, type) {
     this.body = body;
@@ -33,6 +34,7 @@ BodyDeclaration.prototype.handlers = {
     'ThrowStatement': ThrowDeclaration,
     'BreakStatement': BreakStatementExpression,
     'ContinueStatement': ContinueStatementExpression,
+    'LabeledStatement': LabeledDeclaration,
     'TryStatement': TryCatchFinallyDeclaration,
 };
 
