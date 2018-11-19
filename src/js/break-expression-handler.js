@@ -1,4 +1,5 @@
 import {insertLineHandler} from './common';
+import {Expression} from './expression-handler';
 
 function BreakStatementExpression(expression, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
@@ -16,9 +17,12 @@ BreakStatementExpression.prototype.init = function () {
 };
 
 BreakStatementExpression.prototype.handleBreakStatement = function () {
+    let name = new Expression(this.expression.label);
+
     let breakPayload = {
         lineNumber: this.lineNumber,
         type: this.type ? this.type : this.expression.type,
+        name: name.getExpression(),
     };
 
     insertLineHandler(breakPayload);
