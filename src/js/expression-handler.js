@@ -3,7 +3,7 @@ function Expression(conditionExpression) {
 }
 
 Expression.prototype.getExpression = function () {
-    if (!this.handlers[this.conditionExpression.type]) {
+    if (!this.conditionExpression || !this.handlers[this.conditionExpression.type]) {
         return '';
     }
 
