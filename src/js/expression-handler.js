@@ -18,6 +18,7 @@ Expression.prototype.handlers = {
     'UnaryExpression': unaryExpressionTestHandler,
     'CallExpression': CallExpressionTestHandler,
     'ArrayExpression': ArrayExpressionTestHandler,
+    'LogicalExpression':LogicalExpressionTestHandler,
 };
 
 function literalTestHandler(conditionExpression) {
@@ -70,6 +71,10 @@ function ArrayExpressionTestHandler(conditionExpression) {
     }
 
     return '[' + array + ']';
+}
+
+function LogicalExpressionTestHandler(conditionExpression) {
+    return binaryExpressionHandler(conditionExpression);
 }
 
 export {Expression};

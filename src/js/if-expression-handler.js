@@ -8,8 +8,6 @@ function IfExpression(expression, wrapper, lineNumber, type) {
     this.expression = expression;
     this.lineNumber = lineNumber;
     this.type = type;
-
-    console.log(expression);
 }
 
 IfExpression.prototype.init = function () {
@@ -71,8 +69,6 @@ IfExpression.prototype.handleAlternative = function () {
 
 IfExpression.prototype.handleIfDeclaration = function () {
     var payload = this.getPayload();
-
-    console.log(payload);
 
     insertLineHandler(payload);
 
