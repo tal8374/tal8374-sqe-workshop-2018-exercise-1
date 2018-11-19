@@ -27,7 +27,7 @@ ReturnExpression.prototype.getPayload = function () {
 
     return {
         type: this.type ? this.type : this.returnExpression.type,
-        value: expression.getExpression(),
+        value: '' + expression.getExpression(),
         lineNumber: this.lineNumber,
     };
 };
