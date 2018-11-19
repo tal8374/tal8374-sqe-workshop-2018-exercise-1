@@ -18,8 +18,9 @@ Expression.prototype.handlers = {
     'UnaryExpression': unaryExpressionTestHandler,
     'CallExpression': callExpressionTestHandler,
     'ArrayExpression': arrayExpressionTestHandler,
-    'LogicalExpression':logicalExpressionTestHandler,
-    'YieldExpression':yieldExpressionHandler,
+    'LogicalExpression': logicalExpressionTestHandler,
+    'YieldExpression': yieldExpressionHandler,
+    'ObjectExpression': objectExpressionHandler,
 };
 
 function literalTestHandler(conditionExpression) {
@@ -27,7 +28,6 @@ function literalTestHandler(conditionExpression) {
 }
 
 function binaryExpressionHandler(conditionExpression) {
-    console.log(conditionExpression);
     let left = new Expression(conditionExpression.left).getExpression();
     let operator = conditionExpression.operator;
     let right = new Expression(conditionExpression.right).getExpression();
@@ -83,6 +83,23 @@ function yieldExpressionHandler(conditionExpression) {
     let expression = new Expression(conditionExpression.argument);
 
     return expression.getExpression();
+}
+
+function objectExpressionHandler(conditionExpression) {
+    let value = '';
+
+    for (let i = 0; i < conditionExpression.properties.length; i++) {
+        let propertyValue = new Expression(conditionExpression.properties[i].value);
+        let propertyKey = new Expression(conditionExpression.properties[i].key);
+
+        value = value + propertyKey.getExpression() + ':' + propertyValue.getExpression();
+
+        if (i !== conditionExpression.properties.length - 1) {
+            value += ',';
+        }
+    }
+
+    return '{' + value + '}';
 }
 
 export {Expression};
