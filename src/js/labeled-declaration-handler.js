@@ -21,7 +21,7 @@ LabeledDeclaration.prototype.init = function () {
 };
 
 LabeledDeclaration.prototype.handleBody = function () {
-    var bodyDeclarationInstance = new BodyDeclaration(this.expression.body.body, this, this.lineNumber + 1);
+    var bodyDeclarationInstance = new BodyDeclaration(this.expression.body, this, this.lineNumber + 1);
 
     bodyDeclarationInstance.init();
 };
