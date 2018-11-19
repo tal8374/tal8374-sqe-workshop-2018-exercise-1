@@ -16,9 +16,10 @@ Expression.prototype.handlers = {
     'Identifier': identifierTestHandler,
     'MemberExpression': memberExpressionTestHandler,
     'UnaryExpression': unaryExpressionTestHandler,
-    'CallExpression': CallExpressionTestHandler,
-    'ArrayExpression': ArrayExpressionTestHandler,
-    'LogicalExpression':LogicalExpressionTestHandler,
+    'CallExpression': callExpressionTestHandler,
+    'ArrayExpression': arrayExpressionTestHandler,
+    'LogicalExpression':logicalExpressionTestHandler,
+    'YieldExpression':yieldExpressionHandler,
 };
 
 function literalTestHandler(conditionExpression) {
@@ -26,6 +27,7 @@ function literalTestHandler(conditionExpression) {
 }
 
 function binaryExpressionHandler(conditionExpression) {
+    console.log(conditionExpression);
     let left = new Expression(conditionExpression.left).getExpression();
     let operator = conditionExpression.operator;
     let right = new Expression(conditionExpression.right).getExpression();
@@ -51,13 +53,13 @@ function memberExpressionTestHandler(conditionExpression) {
     return object + '[' + property + ']';
 }
 
-function CallExpressionTestHandler(conditionExpression) {
+function callExpressionTestHandler(conditionExpression) {
     let property = new Expression(conditionExpression.callee).getExpression();
 
     return property + '()';
 }
 
-function ArrayExpressionTestHandler(conditionExpression) {
+function arrayExpressionTestHandler(conditionExpression) {
     let array = '';
 
     for (let i = 0; i < conditionExpression.elements.length; i++) {
@@ -73,8 +75,14 @@ function ArrayExpressionTestHandler(conditionExpression) {
     return '[' + array + ']';
 }
 
-function LogicalExpressionTestHandler(conditionExpression) {
+function logicalExpressionTestHandler(conditionExpression) {
     return binaryExpressionHandler(conditionExpression);
+}
+
+function yieldExpressionHandler(conditionExpression) {
+    let expression = new Expression(conditionExpression.argument);
+
+    return expression.getExpression();
 }
 
 export {Expression};
