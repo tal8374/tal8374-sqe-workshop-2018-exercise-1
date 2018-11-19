@@ -1,7 +1,6 @@
 import {insertLineHandler} from './common';
 
 import {ValueExpression} from './value-expression-handler';
-import {BodyDeclaration} from './body-declaration-handler';
 
 function AssignmentExpression(body, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
@@ -36,7 +35,7 @@ AssignmentExpression.prototype.handleUpdateExpression = function () {
 };
 
 AssignmentExpression.prototype.handleSingleExpression = function () {
-    var expression = this.expression ? this.expression : this.body;
+    var expression = this.expression;
 
     this.assignmentExpressionHandler(expression);
 };
@@ -56,11 +55,11 @@ AssignmentExpression.prototype.assignmentExpressionHandler = function (declarati
 };
 
 AssignmentExpression.prototype.parseAssignmentExpressionHandler = function (expression) {
-    var valueExpression = new ValueExpression(expression.right);
+    var valueExpression = new ValueExpression(expression.right ? expression.right : expression  );
 
     return {
         type: this.type ? this.type : 'assignment expression',
-        name: expression.left.name,
+        name: expression.left ? expression.left.name : '',
         value: valueExpression.getValue(),
         lineNumber: this.lineNumber,
     };

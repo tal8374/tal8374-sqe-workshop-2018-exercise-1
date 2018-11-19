@@ -3,6 +3,10 @@ function Expression(conditionExpression) {
 }
 
 Expression.prototype.getExpression = function () {
+    if (!this.handlers[this.conditionExpression.type]) {
+        return '';
+    }
+
     return this.handlers[this.conditionExpression.type](this.conditionExpression);
 };
 
@@ -13,6 +17,7 @@ Expression.prototype.handlers = {
     'MemberExpression': memberExpressionTestHandler,
     'UnaryExpression': unaryExpressionTestHandler,
     'CallExpression': CallExpressionTestHandler,
+    'ArrayExpression': ArrayExpressionTestHandler,
 };
 
 function literalTestHandler(conditionExpression) {
@@ -49,6 +54,22 @@ function CallExpressionTestHandler(conditionExpression) {
     let property = new Expression(conditionExpression.callee).getExpression();
 
     return property + '()';
+}
+
+function ArrayExpressionTestHandler(conditionExpression) {
+    let array = '';
+
+    for (let i = 0; i < conditionExpression.elements.length; i++) {
+        let expression = new Expression(conditionExpression.elements[i]);
+
+        if (i === conditionExpression.elements.length - 1) {
+            array += expression.getExpression();
+        } else {
+            array += expression.getExpression() + ',';
+        }
+    }
+
+    return '[' + array + ']';
 }
 
 export {Expression};
