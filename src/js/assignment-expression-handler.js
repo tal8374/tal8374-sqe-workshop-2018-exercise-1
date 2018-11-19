@@ -1,52 +1,48 @@
 import {insertLineHandler} from './common';
 
 import {ValueExpression} from './value-expression-handler';
+import {BodyDeclaration} from './body-declaration-handler';
 
 function AssignmentExpression(body, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
-    this.body = body;
+    this.expression = body.expression ? body.expression : body;
     this.lineNumber = lineNumber;
     this.type = type;
 }
 
 AssignmentExpression.prototype.init = function () {
-    if (this.body.expression.expressions) {
+    if (this.expression && this.expression.expressions) {
         this.handleMultipleExpression();
-    } else if (this.body.expression.type === 'UpdateExpression') {
+    } else if (this.expression && this.expression.type === 'UpdateExpression') {
         this.handleUpdateExpression();
     } else {
         this.handleSingleExpression();
     }
 
-    this.wrapper.increaseLineNumber(this.lineNumber + 1);
+    this.increaseLineNumber();
 };
 
 AssignmentExpression.prototype.handleUpdateExpression = function () {
-    let valueExpression = new ValueExpression(this.body.expression.argument);
-    let name;
-    if (this.body.expression.prefix) {
-        name = '++' + valueExpression.getValue();
-    } else {
-        name = valueExpression.getValue() + '++';
-    }
+    let valueExpression = new ValueExpression(this.expression.argument);
+    let name = valueExpression.getValue() + '++';
 
     let payload = {
-        type: this.type ? this.type : this.body.expression.type,
+        type: this.type ? this.type : this.expression.type,
         name: name,
-        lineNumber: this.wrapper.getLineNumber(),
+        lineNumber: this.lineNumber,
     };
 
     insertLineHandler(payload);
 };
 
 AssignmentExpression.prototype.handleSingleExpression = function () {
-    var expression = this.body.expression;
+    var expression = this.expression ? this.expression : this.body;
 
     this.assignmentExpressionHandler(expression);
 };
 
 AssignmentExpression.prototype.handleMultipleExpression = function () {
-    var expressions = this.body.expression.expressions;
+    var expressions = this.expression.expressions;
 
     for (let i = 0; i < expressions.length; i++) {
         this.assignmentExpressionHandler(expressions[i]);
@@ -59,15 +55,27 @@ AssignmentExpression.prototype.assignmentExpressionHandler = function (declarati
     insertLineHandler(payload);
 };
 
-AssignmentExpression.prototype.parseAssignmentExpressionHandler = function parseVariable(expression) {
+AssignmentExpression.prototype.parseAssignmentExpressionHandler = function (expression) {
     var valueExpression = new ValueExpression(expression.right);
 
     return {
         type: this.type ? this.type : 'assignment expression',
         name: expression.left.name,
         value: valueExpression.getValue(),
-        lineNumber: this.wrapper.getLineNumber(),
+        lineNumber: this.lineNumber,
     };
+};
+
+AssignmentExpression.prototype.increaseLineNumber = function () {
+    this.lineNumber += 1;
+
+    if (this.wrapper) {
+        this.wrapper.increaseLineNumber();
+    }
+};
+
+AssignmentExpression.prototype.getLineNumber = function () {
+    return this.lineNumber;
 };
 
 export {AssignmentExpression};

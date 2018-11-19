@@ -5,10 +5,12 @@ import {ForDeclaration} from './for-declaration-handler';
 import {AssignmentExpression} from './assignment-expression-handler';
 import {IfExpression} from './if-expression-handler';
 import {ReturnExpression} from './return-expression-handler';
-import {SwitchStatementExpression, BreakStatementExpression} from './switch-expression-handler';
+import {SwitchStatementExpression} from './switch-expression-handler';
 import {DoWhileStatementExpression} from './do-while-expression-handler';
 import {ThrowDeclaration} from './throw-declaration-handler';
 import {TryCatchFinallyDeclaration} from './try-catch-declaration-handler';
+import {BreakStatementExpression} from './break-expression-handler';
+import {ContinueStatementExpression} from './continue-expression-handler';
 
 function BodyDeclaration(body, wrapper, lineNumber = 1, type) {
     this.body = body;
@@ -30,6 +32,7 @@ BodyDeclaration.prototype.handlers = {
     'DoWhileStatement': DoWhileStatementExpression,
     'ThrowStatement': ThrowDeclaration,
     'BreakStatement': BreakStatementExpression,
+    'ContinueStatement': ContinueStatementExpression,
     'TryStatement': TryCatchFinallyDeclaration,
 };
 

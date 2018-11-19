@@ -1,6 +1,7 @@
 import {insertLineHandler} from './common';
 import {BodyDeclaration} from './body-declaration-handler';
 import {Expression} from './expression-handler';
+import {AssignmentExpression} from './assignment-expression-handler';
 
 function ForDeclaration(expression, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
@@ -14,6 +15,8 @@ ForDeclaration.prototype.init = function () {
 
     this.handleParamsDeclaration();
 
+    this.handleUpdate();
+
     this.handleForBody();
 
     this.increaseLineNumber();
@@ -22,13 +25,9 @@ ForDeclaration.prototype.init = function () {
 };
 
 ForDeclaration.prototype.handleParamsDeclaration = function () {
-    let params = this.expression.init.declarations;
+    let body = new BodyDeclaration(this.expression.init, null, this.lineNumber);
 
-    for (let i = 0; i < params.length; i++) {
-        let payload = this.getParamData(params[i]);
-
-        insertLineHandler(payload);
-    }
+    body.init();
 };
 
 ForDeclaration.prototype.getParamData = function (param) {
@@ -38,6 +37,12 @@ ForDeclaration.prototype.getParamData = function (param) {
         name: param.id.name,
         value: param.init.value,
     };
+};
+
+ForDeclaration.prototype.handleUpdate = function () {
+    let update = new AssignmentExpression(this.expression.update, null, this.lineNumber);
+
+    update.init();
 };
 
 ForDeclaration.prototype.handleForBody = function () {
