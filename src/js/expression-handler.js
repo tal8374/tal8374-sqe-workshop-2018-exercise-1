@@ -50,7 +50,12 @@ function memberExpressionTestHandler(conditionExpression) {
     let object = conditionExpression.object.name;
     let property = new Expression(conditionExpression.property).getExpression();
 
-    return object + '[' + property + ']';
+    if (conditionExpression.computed) {
+        return object + '[' + property + ']';
+    } else {
+        return object + '.' + property;
+    }
+
 }
 
 function callExpressionTestHandler(conditionExpression) {

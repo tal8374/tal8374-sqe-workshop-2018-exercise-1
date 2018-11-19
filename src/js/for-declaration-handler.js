@@ -15,6 +15,8 @@ ForDeclaration.prototype.init = function () {
 
     this.handleParamsDeclaration();
 
+    this.handleCondition();
+
     this.handleUpdate();
 
     this.handleForBody();
@@ -30,13 +32,16 @@ ForDeclaration.prototype.handleParamsDeclaration = function () {
     body.init();
 };
 
-ForDeclaration.prototype.getParamData = function (param) {
-    return {
+ForDeclaration.prototype.handleCondition = function () {
+    let condition = new Expression(this.expression.test);
+
+    let payload = {
         lineNumber: this.lineNumber,
-        type: 'Param',
-        name: param.id.name,
-        value: '' + param.init.value,
+        type: this.type ? this.type : this.expression.type,
+        condition: condition.getExpression(),
     };
+
+    insertLineHandler(payload);
 };
 
 ForDeclaration.prototype.handleUpdate = function () {
