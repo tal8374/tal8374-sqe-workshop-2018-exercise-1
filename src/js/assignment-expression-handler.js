@@ -11,11 +11,15 @@ function AssignmentExpression(body, wrapper, lineNumber, type) {
 }
 
 AssignmentExpression.prototype.init = function () {
-    if (this.expression && this.expression.expressions) {
+    if (!this.expression) {
+        return;
+    }
+
+    if (this.expression.expressions) {
         this.handleMultipleExpression();
-    } else if (this.expression && this.expression.type === 'UpdateExpression') {
+    } else if (this.expression.type === 'UpdateExpression') {
         this.handleUpdateExpression();
-    } else if(this.expression && this.expression.type === 'ArrowFunctionExpression'){
+    } else if (this.expression.type === 'ArrowFunctionExpression') {
         this.handleArrowFunction();
     } else {
         this.handleSingleExpression();
@@ -64,7 +68,7 @@ AssignmentExpression.prototype.assignmentExpressionHandler = function (declarati
 };
 
 AssignmentExpression.prototype.parseAssignmentExpressionHandler = function (expression) {
-    var valueExpression = new ValueExpression(expression.right ? expression.right : expression  );
+    var valueExpression = new ValueExpression(expression.right ? expression.right : expression);
 
     return {
         type: this.type ? this.type : 'assignment expression',

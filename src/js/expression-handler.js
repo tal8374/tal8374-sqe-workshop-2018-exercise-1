@@ -113,7 +113,7 @@ function conditionalExpressionHandler(conditionExpression) {
     let alternate = new Expression(conditionExpression.alternate).getExpression();
     let consequent = new Expression(conditionExpression.consequent).getExpression();
 
-    return test + ' ? ' + consequent + ' : ' + alternate
+    return test + ' ? ' + consequent + ' : ' + alternate;
 }
 
 export {Expression};

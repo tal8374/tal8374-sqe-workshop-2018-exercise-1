@@ -1,7 +1,5 @@
 import {insertLineHandler} from './common';
 import {BodyDeclaration} from './body-declaration-handler';
-import {Expression} from './expression-handler';
-import {FunctionDeclaration} from './function-declaration-handler';
 
 function TryCatchFinallyDeclaration(expression, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
