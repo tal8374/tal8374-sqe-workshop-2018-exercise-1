@@ -15,23 +15,17 @@ WhileDeclaration.prototype.init = function () {
 
     this.handleWhileBody();
 
-    if (this.wrapper) {
-        this.wrapper.increaseLineNumber();
-    }
+    this.increaseLineNumber();
 
     return 'Success';
 };
 
 WhileDeclaration.prototype.handleWhileBody = function () {
-    var bodyDeclarationInstance;
+    let bodyContent = this.expression.body.type === 'BlockStatement' ? this.expression.body.body : this.expression.body;
 
-    if (this.expression.body.body) {
-        bodyDeclarationInstance = new BodyDeclaration(this.expression.body.body, this, this.lineNumber + 1);
-    } else {
-        bodyDeclarationInstance = new BodyDeclaration(this.expression.body, this, this.lineNumber + 1);
-    }
+    let body = new BodyDeclaration(bodyContent, this, this.lineNumber + 1);
 
-    bodyDeclarationInstance.init();
+    body.init();
 };
 
 WhileDeclaration.prototype.handleWhileDeclaration = function () {

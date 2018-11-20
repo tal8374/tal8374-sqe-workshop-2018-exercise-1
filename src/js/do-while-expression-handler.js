@@ -31,7 +31,9 @@ DoWhileStatementExpression.prototype.declareStatement = function () {
 };
 
 DoWhileStatementExpression.prototype.handleBody = function () {
-    let body = new BodyDeclaration(this.expression.body.body, this, this.lineNumber + 1);
+    let bodyContent = this.expression.body.type === 'BlockStatement' ? this.expression.body.body : this.expression.body;
+
+    let body = new BodyDeclaration(bodyContent, this, this.lineNumber + 1);
 
     body.init();
 };

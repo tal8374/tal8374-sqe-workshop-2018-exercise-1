@@ -37,9 +37,11 @@ ForDeclaration.prototype.handleUpdate = function () {
 };
 
 ForDeclaration.prototype.handleForBody = function () {
-    let bodyDeclarationInstance = new BodyDeclaration(this.expression.body.body, this, this.lineNumber + 1);
+    let bodyContent = this.expression.body.type === 'BlockStatement' ? this.expression.body.body : this.expression.body;
 
-    bodyDeclarationInstance.init();
+    let body = new BodyDeclaration(bodyContent, this, this.lineNumber + 1);
+
+    body.init();
 };
 
 ForDeclaration.prototype.handleForDeclaration = function () {
