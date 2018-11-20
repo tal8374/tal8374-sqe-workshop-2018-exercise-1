@@ -50,6 +50,8 @@ BodyDeclaration.prototype.init = function () {
     for (let i = 0; i < this.body.length; i++) {
         this.handleDeclaration(this.body[i]);
     }
+
+    return 'Success'
 };
 
 BodyDeclaration.prototype.handleDeclaration = function (declaration) {

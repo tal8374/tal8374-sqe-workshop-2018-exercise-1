@@ -15,7 +15,7 @@ SwitchStatementExpression.prototype.init = function () {
 
     this.handleCases();
 
-    return 'Initialization done';
+    return 'Success';
 };
 
 SwitchStatementExpression.prototype.handleDeclaration = function () {

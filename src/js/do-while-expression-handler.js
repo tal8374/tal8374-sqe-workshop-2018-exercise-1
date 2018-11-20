@@ -15,7 +15,7 @@ DoWhileStatementExpression.prototype.init = function () {
 
     this.handleBody();
 
-    return 'Initialization done';
+    return 'Success';
 };
 
 DoWhileStatementExpression.prototype.declareStatement = function () {

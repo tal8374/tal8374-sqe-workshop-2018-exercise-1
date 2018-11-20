@@ -44,7 +44,7 @@ describe('Value expression handler', () => {
     });
 
     it('should handle complex expression', () => {
-        var parsedCode =  {
+        var parsedCode = {
             'type': 'MemberExpression',
             'computed': true,
             'object': {
@@ -62,18 +62,6 @@ describe('Value expression handler', () => {
         assert.equal(
             result,
             'arr[i]'
-        );
-
-    });
-
-    it('should handle null expression', () => {
-        var parsedCode =  null;
-        var valueExpression = new ValueExpression(parsedCode);
-        var result = valueExpression.getValue();
-
-        assert.equal(
-            result,
-            null
         );
 
     });

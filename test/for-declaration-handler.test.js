@@ -46,4 +46,26 @@ describe('For declaration handler', () => {
         );
     });
 
+    it('should handle for loop with body\'', () => {
+        var parsedCode = parseCode('for (i = 0; i < 10; i++) {if (i === 3) { break; }if (i === 3) { continue; }}');
+        var forDeclaration = new ForDeclaration(parsedCode.body[0], null, 1);
+        var result = forDeclaration.init();
+
+        assert.equal(
+            result,
+            'Success'
+        );
+    });
+
+    it('should handle for loop with body\'', () => {
+        var parsedCode = parseCode('for (i = 0; i < 10; i++) {if (i === 3) { continue; }}');
+        var forDeclaration = new ForDeclaration(parsedCode.body[0], null, 1);
+        var result = forDeclaration.init();
+
+        assert.equal(
+            result,
+            'Success'
+        );
+    });
+
 });

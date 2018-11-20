@@ -26,6 +26,8 @@ AssignmentExpression.prototype.init = function () {
     }
 
     this.increaseLineNumber();
+
+    return 'Success';
 };
 
 AssignmentExpression.prototype.handleArrowFunction = function () {
