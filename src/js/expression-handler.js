@@ -21,6 +21,7 @@ Expression.prototype.handlers = {
     'LogicalExpression': logicalExpressionTestHandler,
     'YieldExpression': yieldExpressionHandler,
     'ObjectExpression': objectExpressionHandler,
+    'ConditionalExpression': conditionalExpressionHandler,
 };
 
 function literalTestHandler(conditionExpression) {
@@ -105,6 +106,14 @@ function objectExpressionHandler(conditionExpression) {
     }
 
     return '{' + value + '}';
+}
+
+function conditionalExpressionHandler(conditionExpression) {
+    let test = new Expression(conditionExpression.test).getExpression();
+    let alternate = new Expression(conditionExpression.alternate).getExpression();
+    let consequent = new Expression(conditionExpression.consequent).getExpression();
+
+    return test + ' ? ' + consequent + ' : ' + alternate
 }
 
 export {Expression};

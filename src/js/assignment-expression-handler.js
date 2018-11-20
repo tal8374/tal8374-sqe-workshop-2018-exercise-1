@@ -11,7 +11,6 @@ function AssignmentExpression(body, wrapper, lineNumber, type) {
 }
 
 AssignmentExpression.prototype.init = function () {
-    console.log(this.expression);
     if (this.expression && this.expression.expressions) {
         this.handleMultipleExpression();
     } else if (this.expression && this.expression.type === 'UpdateExpression') {

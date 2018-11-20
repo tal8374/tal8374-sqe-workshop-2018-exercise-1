@@ -39,9 +39,6 @@ ArrowFunctionDeclaration.prototype.handleDeclaration = function () {
 };
 
 ArrowFunctionDeclaration.prototype.handleParams = function () {
-    console.log(2)
-
-    console.log(this.expression.params);
     var params = this.expression.params;
 
     for (let i = 0; i < params.length; i++) {
