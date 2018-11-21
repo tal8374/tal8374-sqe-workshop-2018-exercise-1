@@ -1,5 +1,6 @@
 import {insertLineHandler} from './common';
 import {BodyDeclaration} from './body-declaration-handler';
+import {Expression} from './expression-handler';
 
 function FunctionDeclaration(body, wrapper, lineNumber, type) {
     this.wrapper = wrapper;
@@ -37,10 +38,12 @@ FunctionDeclaration.prototype.handleParamsDeclaration = function () {
 };
 
 FunctionDeclaration.prototype.getParamData = function (param) {
+    let name = new Expression(param);
+
     return {
         lineNumber: this.lineNumber,
         type: this.type ? this.type : 'Param',
-        name: param.name,
+        name: name.getExpression(),
         value: null,
     };
 };

@@ -14,6 +14,7 @@ import {ContinueStatementExpression} from './continue-expression-handler';
 import {LabeledDeclaration} from './labeled-declaration-handler';
 import {ForInDeclaration} from './for-in-declaration-handler';
 import {ForOfDeclaration} from './for-of-declaration-handler';
+import {BlockDeclaration} from './block-declaration-handler';
 
 function BodyDeclaration(body, wrapper, lineNumber = 1, type) {
     this.body = body;
@@ -40,6 +41,7 @@ BodyDeclaration.prototype.handlers = {
     'TryStatement': TryCatchFinallyDeclaration,
     'ForInStatement': ForInDeclaration,
     'ForOfStatement': ForOfDeclaration,
+    'BlockStatement': BlockDeclaration,
 };
 
 BodyDeclaration.prototype.init = function () {
@@ -51,7 +53,7 @@ BodyDeclaration.prototype.init = function () {
         this.handleDeclaration(this.body[i]);
     }
 
-    return 'Success'
+    return 'Success';
 };
 
 BodyDeclaration.prototype.handleDeclaration = function (declaration) {

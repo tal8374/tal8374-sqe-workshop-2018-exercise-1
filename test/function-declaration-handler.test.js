@@ -58,4 +58,15 @@ describe('Function declaration handler', () => {
         );
     });
 
+    it('should handle param with assignment', () => {
+        var parsedCode = parseCode('function functionName(p = 1){}');
+        var functionDeclaration = new FunctionDeclaration(parsedCode.body[0], null, 1);
+        var result = functionDeclaration.init();
+
+        assert.equal(
+            result,
+            'Success'
+        );
+    });
+
 });
