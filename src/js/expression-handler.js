@@ -23,6 +23,7 @@ Expression.prototype.handlers = {
     'ObjectExpression': objectExpressionHandler,
     'ConditionalExpression': conditionalExpressionHandler,
     'AssignmentPattern': assignmentPatternHandler,
+    'AssignmentExpression': assignmentPatternHandler,
 };
 
 function literalTestHandler(conditionExpression) {

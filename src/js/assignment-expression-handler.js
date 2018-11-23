@@ -73,7 +73,7 @@ AssignmentExpression.prototype.parseAssignmentExpressionHandler = function (expr
     var valueExpression = new ValueExpression(expression.right ? expression.right : expression);
 
     return {
-        type: this.type ? this.type : 'assignment expression',
+        type: this.type ? this.type : this.expression.type,
         name: expression.left ? expression.left.name : '',
         value: '' + valueExpression.getValue(),
         lineNumber: this.lineNumber,

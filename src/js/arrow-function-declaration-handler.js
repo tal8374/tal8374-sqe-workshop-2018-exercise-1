@@ -51,7 +51,7 @@ ArrowFunctionDeclaration.prototype.handleParams = function () {
 ArrowFunctionDeclaration.prototype.getParamData = function (param) {
     return {
         lineNumber: this.lineNumber,
-        type: this.type ? this.type : 'Param',
+        type: this.type ? this.type : this.expression.type,
         name: param.name,
         value: null,
     };

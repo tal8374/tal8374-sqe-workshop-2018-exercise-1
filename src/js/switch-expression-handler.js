@@ -70,7 +70,7 @@ SwitchStatementExpression.prototype.handleCaseBody = function (caseData) {
 
     body.init();
 
-    this.increaseLineNumber();
+    // this.increaseLineNumber();
 };
 
 SwitchStatementExpression.prototype.increaseLineNumber = function () {

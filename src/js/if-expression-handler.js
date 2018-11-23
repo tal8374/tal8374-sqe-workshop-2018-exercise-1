@@ -22,27 +22,11 @@ IfExpression.prototype.init = function () {
     return 'Initialization done';
 };
 
-IfExpression.prototype.handlers = {
-    'ExpressionStatement': expressionStatementHandler,
-    'BlockStatement': blockStatementHandler,
-};
-
-function expressionStatementHandler(body, wrapper, lineNumber) {
-    let bodyDeclarationInstance = new BodyDeclaration(body, wrapper, lineNumber + 1);
-
-    bodyDeclarationInstance.init();
-}
-
-function blockStatementHandler(body, wrapper, lineNumber) {
-    let bodyDeclarationInstance = new BodyDeclaration(body.body, wrapper, lineNumber + 1);
-
-    bodyDeclarationInstance.init();
-}
-
 IfExpression.prototype.handleIfBody = function () {
     let body = this.expression.consequent ? this.expression.consequent : this.expression.alternate;
 
-    this.handlers[body.type](body, this, this.lineNumber);
+    let bodyExpression = new BodyDeclaration(body, this, this.lineNumber + 1);
+    bodyExpression.init();
 
     return 'Body statement is handled';
 };
@@ -51,20 +35,38 @@ IfExpression.prototype.handleAlternative = function () {
     if (!this.expression.alternate) return 'Alternative does not exists';
 
     if (this.expression.alternate.type === 'IfStatement') {
-        var alternative = new IfExpression(this.expression.alternate, this, this.lineNumber + 1, 'else if statement');
-        alternative.init();
+        this.handleIfElseStatement();
     } else {
-        var bodyInstance;
-
-        if (this.expression.alternate.body) {
-            bodyInstance = new BodyDeclaration(this.expression.alternate.body, this, this.lineNumber + 1, 'else if statement');
-        } else {
-            bodyInstance = new BodyDeclaration(this.expression.alternate, this, this.lineNumber + 1, 'else if statement');
-        }
-        bodyInstance.init();
+        this.handleElseStatement();
     }
 
     return 'Done handling the alternative';
+};
+
+IfExpression.prototype.handleIfElseStatement = function () {
+    var alternative = new IfExpression(this.expression.alternate, this, this.lineNumber + 1, 'else if statement');
+    alternative.init();
+};
+
+IfExpression.prototype.handleElseStatement = function () {
+    var bodyInstance;
+    this.declareElseStatement();
+
+    if (this.expression.alternate.body) {
+        bodyInstance = new BodyDeclaration(this.expression.alternate.body, this, this.lineNumber + 1);
+    } else {
+        bodyInstance = new BodyDeclaration(this.expression.alternate, this, this.lineNumber + 1);
+    }
+    bodyInstance.init();
+};
+
+IfExpression.prototype.declareElseStatement = function () {
+    var payload = {
+        lineNumber: this.lineNumber,
+        type: this.type ? this.type : this.expression.type,
+    };
+
+    insertLineHandler(payload);
 };
 
 IfExpression.prototype.handleIfDeclaration = function () {
@@ -80,7 +82,7 @@ IfExpression.prototype.getPayload = function () {
 
     return {
         lineNumber: this.lineNumber,
-        type: this.type ? this.type : 'if statement',
+        type: this.type ? this.type : this.expression.type,
         name: null,
         value: null,
         condition: condition ? condition.getExpression() : '',
