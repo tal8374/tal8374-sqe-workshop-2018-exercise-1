@@ -70,14 +70,21 @@ AssignmentExpression.prototype.assignmentExpressionHandler = function (declarati
 };
 
 AssignmentExpression.prototype.parseAssignmentExpressionHandler = function (expression) {
-    var valueExpression = new ValueExpression(expression.right ? expression.right : expression);
+    let valueExpression = new ValueExpression(expression.right ? expression.right : expression);
+
 
     return {
         type: this.type ? this.type : this.expression.type,
-        name: expression.left ? expression.left.name : '',
+        name: this.getName(expression),
         value: '' + valueExpression.getValue(),
         lineNumber: this.lineNumber,
     };
+};
+
+AssignmentExpression.prototype.getName = function (expression) {
+    if(!expression.left) return '';
+
+    return expression.left.name ? expression.left.name : expression.left.property.name;
 };
 
 AssignmentExpression.prototype.increaseLineNumber = function () {

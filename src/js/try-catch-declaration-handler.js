@@ -42,9 +42,13 @@ TryCatchFinallyDeclaration.prototype.handleBody = function (body) {
 };
 
 TryCatchFinallyDeclaration.prototype.handleCatch = function () {
+    if(!this.expression.handler || this.expression.handler.type !== 'CatchClause') return;
+
     this.declareCatch();
 
     this.handleCatchParams();
+
+    // this.increaseLineNumber();
 
     this.handleBody(this.expression.handler.body.body);
 };
@@ -52,7 +56,7 @@ TryCatchFinallyDeclaration.prototype.handleCatch = function () {
 TryCatchFinallyDeclaration.prototype.declareCatch = function () {
     let breakPayload = {
         lineNumber: this.lineNumber,
-        type: this.type ? this.type : this.expression.handler.type,
+        type: this.expression.handler ? this.expression.handler.type : this.expression.type,
     };
 
     insertLineHandler(breakPayload);
@@ -76,6 +80,8 @@ TryCatchFinallyDeclaration.prototype.getParamData = function (param) {
 };
 
 TryCatchFinallyDeclaration.prototype.handleFinal = function () {
+    if(!this.expression.finalizer) return;
+
     this.declareFinal();
 
     this.handleBody(this.expression.finalizer.body);

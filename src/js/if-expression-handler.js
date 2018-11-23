@@ -50,6 +50,8 @@ IfExpression.prototype.handleIfElseStatement = function () {
 
 IfExpression.prototype.handleElseStatement = function () {
     var bodyInstance;
+    this.increaseLineNumber();
+
     this.declareElseStatement();
 
     if (this.expression.alternate.body) {

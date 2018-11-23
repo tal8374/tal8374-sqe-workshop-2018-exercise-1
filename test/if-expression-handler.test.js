@@ -63,7 +63,7 @@ describe('The if statement handler', () => {
                     JSON.stringify(payload),
                     JSON.stringify({
                         lineNumber: 1,
-                        type: 'if statement',
+                        type: 'IfStatement',
                         name: null,
                         value: null,
                         condition: 'statement',
@@ -80,7 +80,7 @@ describe('The if statement handler', () => {
                     JSON.stringify(payload),
                     JSON.stringify({
                         lineNumber: 1,
-                        type: 'if statement',
+                        type: 'IfStatement',
                         name: null,
                         value: null,
                         condition: 'statement',
@@ -97,7 +97,7 @@ describe('The if statement handler', () => {
                     JSON.stringify(payload),
                     JSON.stringify({
                         lineNumber: 1,
-                        type: 'if statement',
+                        type: 'IfStatement',
                         name: null,
                         value: null,
                         condition: 'statement1<statement1',
@@ -114,7 +114,7 @@ describe('The if statement handler', () => {
                     JSON.stringify(payload),
                     JSON.stringify({
                         lineNumber: 1,
-                        type: 'if statement',
+                        type: 'IfStatement',
                         name: null,
                         value: null,
                         condition: 'arr[i]',

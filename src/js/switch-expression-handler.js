@@ -15,6 +15,8 @@ SwitchStatementExpression.prototype.init = function () {
 
     this.handleCases();
 
+    this.increaseLineNumber();
+
     return 'Success';
 };
 
@@ -69,8 +71,6 @@ SwitchStatementExpression.prototype.handleCaseBody = function (caseData) {
     let body = new BodyDeclaration(caseData.consequent, this, this.lineNumber + 1);
 
     body.init();
-
-    // this.increaseLineNumber();
 };
 
 SwitchStatementExpression.prototype.increaseLineNumber = function () {

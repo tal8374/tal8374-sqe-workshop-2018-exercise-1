@@ -15,6 +15,8 @@ DoWhileStatementExpression.prototype.init = function () {
 
     this.handleBody();
 
+    this.increaseLineNumber();
+
     return 'Success';
 };
 
